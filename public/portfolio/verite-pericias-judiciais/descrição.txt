@@ -1,0 +1,7 @@
+nome do projeto: Site institucional Vérité
+
+descrição: Foi criado um site completo com página home, sobre nós, serviços, uma página única para cada serviço, página da fundadora e contato e envio de email. O site foi criado com qualidade gráfica fidedigna a identidade visual da marca. Responsividade e SEO completos. Além de toda a segurança e hospedagem também estar por nossa conta.
+
+tecnologias utilizadas: nextjs, supabase, n8n.
+
+link útil: https://institutoverite.com.br/

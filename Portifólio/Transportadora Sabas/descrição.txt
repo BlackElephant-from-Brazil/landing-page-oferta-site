@@ -1,0 +1,9 @@
+nome do projeto: Site institucional da transportadora Sabas + Software de Gestão completo.
+
+descrição: Foi criado um site completo com página home, veículos, categorias, quem somos e contato. O site foi criado com qualidade gráfica fidedigna a identidade visual da marca. Responsividade e SEO completos. Além de toda a segurança e hospedagem também estar por nossa conta. 
+
+Além disso, também foi entregue um software de gestão completo para organização de toda a operação interna da empresa. Onde fazemos a gestão das solicitações de viagem, gestão financeira de pagamentos, escala de motoristas, envio de relatórios via whatsapp e email, exporta informações em xlsx e pdf e muito mais.
+
+tecnologias utilizadas: nextjs, bubble, n8n.
+
+link útil: https://sabas.com.br/

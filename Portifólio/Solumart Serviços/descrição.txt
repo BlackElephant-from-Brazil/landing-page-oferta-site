@@ -1,0 +1,10 @@
+nome do projeto: APP + Software de Gestão completo.
+
+descrição: Foi criado um software de gestão completo para fazer o agendamento de todos os prestadores de serviço da empresa. O sistema foi criado com qualidade gráfica fidedigna a identidade visual da marca. No sistema, podemos analisar todas as solicitações de serviço, fazer a gestão financeira de pagamentos, escala de prestadores, envio de relatórios via whatsapp e email, exporta informações em xlsx e pdf e muito mais.
+
+
+Além disso, também foi entregue um app para os prestadores de serviço poderem analisar suas atividades futuras.
+
+tecnologias utilizadas: bubble, make.
+
+link útil: https://solumart.bubbleapps.io/

@@ -1,0 +1,7 @@
+nome do projeto: Site institucional + Software de Gestão completo.
+
+descrição: Foi criado um site institucional completo para a empresa mais um software de gestão completo para fazer o gerenciamento de toda operação da empresa. O sistema cuida de toda a parte financeira, contratos, clientes, parceiros e movimentação de impostos. O software foi criado com qualidade gráfica fidedigna a identidade visual da marca. Faz envio de relatórios via whatsapp e email, exporta informações em xlsx e pdf e muito mais.
+
+tecnologias utilizadas: nextjs, supabase e n8n.
+
+link útil: https://hubfive.com.br/

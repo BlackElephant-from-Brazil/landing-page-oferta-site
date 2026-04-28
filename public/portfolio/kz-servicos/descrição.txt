@@ -1,0 +1,10 @@
+nome do projeto: APP Cliente + APP Prestador + Software de Gestão completo.
+
+descrição: Foi criado um software de gestão completo para fazer o agendamento de todos os prestadores de serviço da empresa. O sistema foi criado com qualidade gráfica fidedigna a identidade visual da marca. No sistema, podemos analisar todas as solicitações de serviço e viagens, fazer a gestão financeira de pagamentos, escala de prestadores e motoristas, envio de relatórios via whatsapp e email, exporta informações em xlsx e pdf e muito mais.
+
+
+Além disso, também foi entregue um app para os prestadores de serviço poderem analisar suas atividades futuras e um app para os clientes da empresa fazerem as solicitações de serviços e viagens.
+
+tecnologias utilizadas: nextjs, supabase e n8n.
+
+link útil: https://kz-serviços.netlify.app/

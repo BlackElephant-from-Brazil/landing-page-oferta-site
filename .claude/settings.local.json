@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(New-NetFirewallRule *)",
+      "Bash(npm run *)",
+      "Bash(taskkill /PID 14192 /F)",
+      "Bash(tasklist)",
+      "Bash(findstr -i node)",
+      "Bash(rm -f \"BlackElephant Landing Page v2.html\" \"BlackElephant Landing Page.html\" \"index.html\" \"app.js\" \"landing.css\" \"particles.js\" \"styles.css\" \"tweaks-panel.jsx\")",
+      "Bash(rm -rf \"liquid-glass-effect-macos\")",
+      "Bash(npm install *)",
+      "PowerShell(Stop-Process *)",
+      "Bash(find \"C:/Users/v27me/Videos/landing-page-oferta-site/Portif\"* -name \"*.txt\")",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(git init *)",
+      "Bash(git remote *)"
+    ]
+  }
+}
