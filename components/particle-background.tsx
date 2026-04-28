@@ -190,6 +190,18 @@ export default function ParticleBackground({
 
       scene.add(beamsGroup);
 
+      let scrollVelocity = 0;
+      let lastScrollY = window.scrollY;
+      const onScroll = () => {
+        const delta = window.scrollY - lastScrollY;
+        lastScrollY = window.scrollY;
+        const inTimeline = document.body.hasAttribute("data-timeline-scrolling");
+        const mult = inTimeline ? 0.006 : 0.0025;
+        scrollVelocity += delta * mult;
+        scrollVelocity = Math.max(-0.24, Math.min(0.24, scrollVelocity));
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+
       let time = 0;
       const animate = () => {
         animationFrame = window.requestAnimationFrame(animate);
@@ -200,12 +212,16 @@ export default function ParticleBackground({
             .array as Float32Array;
           for (let index = 0; index < particleCount; index += 1) {
             const i3 = index * 3;
-            attribute[i3] += velocities[i3] + 0.01;
+            attribute[i3] += velocities[i3] + 0.01 + scrollVelocity * 0.85;
             attribute[i3 + 1] += Math.sin(time + index * 0.18) * 0.01;
             attribute[i3 + 2] += velocities[i3 + 2];
 
             if (attribute[i3] > 96) {
               attribute[i3] = -96 + Math.random() * 16;
+              attribute[i3 + 1] = (Math.random() - 0.5) * 90;
+              attribute[i3 + 2] = (Math.random() - 0.5) * 42 - 32;
+            } else if (attribute[i3] < -96) {
+              attribute[i3] = 96 - Math.random() * 16;
               attribute[i3 + 1] = (Math.random() - 0.5) * 90;
               attribute[i3 + 2] = (Math.random() - 0.5) * 42 - 32;
             }
@@ -216,14 +232,18 @@ export default function ParticleBackground({
 
         beamsGroup?.children.forEach((beam, index) => {
           const mesh = beam as THREE.Mesh;
-          mesh.position.x += mesh.userData.speed;
+          mesh.position.x += mesh.userData.speed + scrollVelocity * 2.8;
           mesh.position.y += Math.sin(time * 0.5 + mesh.userData.phase + index) * 0.018;
           if (mesh.position.x > 120) {
             mesh.position.x = -128;
+          } else if (mesh.position.x < -160) {
+            mesh.position.x = 128;
           }
           const shader = mesh.material as THREE.ShaderMaterial;
           shader.uniforms.uTime.value = time;
         });
+
+        scrollVelocity *= 0.93;
 
         renderer?.render(scene!, camera!);
         announceReady();
@@ -243,6 +263,7 @@ export default function ParticleBackground({
       return () => {
         window.cancelAnimationFrame(animationFrame);
         window.removeEventListener("resize", resize);
+        window.removeEventListener("scroll", onScroll);
         beamsGroup?.children.forEach((beam) => {
           const mesh = beam as THREE.Mesh;
           mesh.geometry.dispose();

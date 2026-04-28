@@ -9,14 +9,18 @@ import {
   BadgeCheck,
   Check,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Clock3,
   Globe,
   Layers3,
   LineChart,
   Lock,
+  Maximize2,
   MessageCircleMore,
   ShieldCheck,
   Sparkles,
+  X,
   Zap,
 } from "lucide-react";
 import BrandLockup from "@/components/brand-lockup";
@@ -49,6 +53,10 @@ export default function LandingPage() {
   const [loaderHidden, setLoaderHidden] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [activeProject, setActiveProject] = useState(0);
+  const [mobileImageIndex, setMobileImageIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
+  const touchStartX = useRef(0);
   const mainRef = useRef<HTMLDivElement>(null);
   const heroPrimaryRef = useRef<HTMLAnchorElement>(null);
   const finalCtaRef = useRef<HTMLAnchorElement>(null);
@@ -100,6 +108,8 @@ export default function LandingPage() {
   useLayoutEffect(() => {
     if (!loaderHidden || !mainRef.current) return;
 
+    let mobileScrollCleanup: (() => void) | undefined;
+
     const context = gsap.context(() => {
       if (reducedMotion) {
         gsap.set("[data-reveal]", { clearProps: "all", opacity: 1 });
@@ -133,14 +143,16 @@ export default function LandingPage() {
       if (horizontalSection && horizontalTrack) {
         ScrollTrigger.matchMedia({
           "(min-width: 1024px)": () => {
+            const progressBar = document.querySelector<HTMLElement>(
+              "[data-timeline-progress]",
+            );
+
             const getDistance = () => {
               const trackRect = horizontalTrack.getBoundingClientRect();
               return Math.max(0, trackRect.left + horizontalTrack.scrollWidth - window.innerWidth + 40);
             };
 
-            const tween = gsap.to(horizontalTrack, {
-              x: () => -getDistance(),
-              ease: "none",
+            const tl = gsap.timeline({
               scrollTrigger: {
                 trigger: horizontalSection,
                 start: "top top",
@@ -149,12 +161,54 @@ export default function LandingPage() {
                 pin: true,
                 anticipatePin: 1,
                 invalidateOnRefresh: true,
+                onToggle: (self) => {
+                  document.body.toggleAttribute(
+                    "data-timeline-scrolling",
+                    self.isActive,
+                  );
+                },
+                onUpdate: (self) => {
+                  const p = self.progress;
+                  const trackWidth = horizontalTrack.scrollWidth;
+                  horizontalTrack
+                    .querySelectorAll<HTMLElement>("[data-timeline-card]")
+                    .forEach((card) => {
+                      const threshold = card.offsetLeft / trackWidth;
+                      card.classList.toggle(
+                        "timeline-card--active",
+                        p >= threshold - 0.02,
+                      );
+                    });
+                },
               },
             });
 
-            return () => tween.kill();
+            tl.to(horizontalTrack, { x: () => -getDistance(), ease: "none" });
+
+            if (progressBar) {
+              gsap.set(progressBar, { scaleX: 0 });
+              tl.to(progressBar, { scaleX: 1, ease: "none" }, "<");
+            }
+
+            return () => tl.kill();
           },
         });
+
+        const mobileScroller = horizontalTrack.parentElement as HTMLElement;
+        const activateMobileCards = () => {
+          if (window.innerWidth >= 1024) return;
+          const scrollLeft = mobileScroller?.scrollLeft ?? 0;
+          const viewWidth = mobileScroller?.clientWidth ?? window.innerWidth;
+          horizontalTrack
+            .querySelectorAll<HTMLElement>("[data-timeline-card]")
+            .forEach((card) => {
+              const threshold = Math.max(0, card.offsetLeft - viewWidth * 0.55);
+              card.classList.toggle("timeline-card--active", scrollLeft >= threshold);
+            });
+        };
+        mobileScroller?.addEventListener("scroll", activateMobileCards, { passive: true });
+        mobileScrollCleanup = () =>
+          mobileScroller?.removeEventListener("scroll", activateMobileCards);
       }
 
       [heroPrimaryRef.current, finalCtaRef.current].forEach((button) => {
@@ -172,6 +226,7 @@ export default function LandingPage() {
 
     return () => {
       context.revert();
+      mobileScrollCleanup?.();
     };
   }, [loaderHidden, reducedMotion]);
 
@@ -303,7 +358,7 @@ export default function LandingPage() {
                   ["SEO", "base completa"],
                   ["A/B", "opcional"],
                 ].map(([value, label]) => (
-                  <div key={value} className="pr-4">
+                  <div key={value} className="text-center sm:text-left sm:pr-4">
                     <p className="text-xl font-medium leading-none text-white sm:text-3xl">
                       {value}
                     </p>
@@ -321,7 +376,6 @@ export default function LandingPage() {
                 borderRadius="2rem"
                 enableHover={false}
                 enableTilt
-                blur={24}
                 className="!cursor-default"
               >
                 <div className="w-full p-5 sm:p-7">
@@ -395,7 +449,7 @@ export default function LandingPage() {
 
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-x-0 bottom-6 z-10 flex flex-col items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-white/42"
+            className="pointer-events-none absolute inset-x-0 bottom-6 z-10 hidden flex-col items-center gap-2 font-mono text-[10px] uppercase tracking-[0.16em] text-white/42 sm:flex"
           >
             <span>scroll</span>
             <span className="block h-8 w-px animate-pulse bg-gradient-to-b from-white/40 to-transparent" />
@@ -533,12 +587,12 @@ export default function LandingPage() {
                           filter: "blur(0.5px)",
                         }}
                       />
-                      <div className="absolute right-5 top-0 z-20 flex items-center gap-2 rounded-full border border-brand/50 bg-[#040904]/90 px-3.5 py-1.5 shadow-[0_0_18px_rgba(57,254,21,0.28)] backdrop-blur-sm">
+                      <div className="absolute left-1/2 top-0 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-brand/50 bg-[#040904]/90 px-3.5 py-1.5 shadow-[0_0_18px_rgba(57,254,21,0.28)] backdrop-blur-sm sm:left-5 sm:translate-x-0">
                         <span
                           className="size-1.5 rounded-full bg-brand"
                           style={{ animation: "be-pulse-soft 2s ease-in-out infinite" }}
                         />
-                        <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-brand">
+                        <span className="whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.18em] text-brand">
                           {offer.highlight}
                         </span>
                       </div>
@@ -747,46 +801,48 @@ export default function LandingPage() {
 
             <div
               data-reveal
-              className="timeline-scroll mt-12 overflow-x-auto pb-5 lg:overflow-visible"
+              className="timeline-scroll mt-32 overflow-x-auto lg:overflow-visible"
               aria-label="Timeline horizontal da BlackElephant"
             >
               <div
                 data-horizontal-track
-                className="relative flex min-w-max snap-x snap-mandatory gap-5 pr-8 will-change-transform lg:snap-none"
+                className="relative flex min-w-max snap-x snap-mandatory gap-8 pr-8 will-change-transform lg:gap-80 lg:snap-none"
               >
+                {/* linha base sempre visível */}
                 <div
                   aria-hidden="true"
-                  className="absolute left-0 right-0 top-[4.25rem] h-px bg-gradient-to-r from-white/10 via-brand/55 to-white/10"
+                  className="absolute left-0 right-0 top-[130px] z-[0] h-px bg-white/10"
+                />
+                {/* progress bar com glow driven pelo scroll */}
+                <div
+                  aria-hidden="true"
+                  data-timeline-progress
+                  className="absolute left-0 right-0 top-[130px] z-[0] h-[2px] origin-left"
+                  style={{
+                    background:
+                      "linear-gradient(90deg, transparent 0%, #39fe15 8%, #39fe15 85%, transparent 100%)",
+                    boxShadow:
+                      "0 0 6px 2px rgba(57,254,21,0.55), 0 0 20px 6px rgba(57,254,21,0.22)",
+                    transform: "scaleX(0)",
+                  }}
                 />
                 {landingContent.companyTimeline.map((item, index) => (
                   <article
                     key={item.year}
-                    className="relative w-[78vw] max-w-[420px] snap-start sm:w-[360px] lg:w-[420px]"
+                    data-timeline-card
+                    className="timeline-card relative w-[78vw] max-w-[420px] snap-start sm:w-[360px] lg:w-[420px]"
                   >
-                    <div className="relative z-10 mb-6 flex items-center gap-4">
-                      <span className="flex size-10 items-center justify-center rounded-full bg-brand font-mono text-sm text-brand-foreground">
-                        {index + 1}
-                      </span>
-                      <span className="h-px flex-1 bg-white/14" />
+                    <div className="flex min-h-[260px] w-full flex-col p-6 sm:p-7">
+                      <p className="text-[4rem] font-medium leading-none tracking-normal text-brand sm:text-[4.8rem]">
+                        {item.year}
+                      </p>
+                      <h3 className="mt-7 text-2xl font-medium leading-tight tracking-normal text-white">
+                        {item.label}
+                      </h3>
+                      <p className="mt-4 text-sm leading-7 text-white/68">
+                        {item.description}
+                      </p>
                     </div>
-                    <LiquidGlassV2
-                      variant="sidebar"
-                      borderRadius="1.8rem"
-                      enableHover={false}
-                      className="h-full !cursor-default"
-                    >
-                      <div className="flex min-h-[260px] w-full flex-col p-6 sm:p-7">
-                        <p className="text-[4rem] font-medium leading-none tracking-normal text-brand sm:text-[4.8rem]">
-                          {item.year}
-                        </p>
-                        <h3 className="mt-7 text-2xl font-medium leading-tight tracking-normal text-white">
-                          {item.label}
-                        </h3>
-                        <p className="mt-4 text-sm leading-7 text-white/68">
-                          {item.description}
-                        </p>
-                      </div>
-                    </LiquidGlassV2>
                   </article>
                 ))}
               </div>
@@ -850,62 +906,218 @@ export default function LandingPage() {
               </p>
             </div>
 
-            <div
-              data-reveal
-              className="mt-10 flex gap-2 overflow-x-auto pb-2"
-              style={{ scrollbarWidth: "none" }}
-            >
-              {portfolioProjects.map((project, index) => (
-                <button
-                  key={project.slug}
-                  onClick={() => setActiveProject(index)}
-                  className={`shrink-0 whitespace-nowrap rounded-full border px-4 py-2 font-mono text-[11px] uppercase tracking-[0.14em] transition ${
-                    activeProject === index
-                      ? "border-brand/50 bg-brand-soft text-brand"
-                      : "border-white/12 bg-white/[0.025] text-white/56 hover:border-white/24 hover:text-white/80"
-                  }`}
-                >
-                  {project.name}
-                </button>
-              ))}
-            </div>
-
-            <div data-reveal className="mt-5">
+            <div data-reveal className="relative mt-8 hidden overflow-hidden rounded-[2rem] lg:block">
               <BendSliderComponent
                 images={portfolioProjects[activeProject].images}
-                className="h-[62vh] min-h-[340px] w-full overflow-hidden rounded-[2rem]"
+                className="h-[80vh] min-h-[420px] w-full"
               />
-            </div>
 
-            <div data-reveal className="mt-8 flex flex-col gap-6 lg:flex-row lg:items-start lg:gap-10">
-              <div className="flex shrink-0 items-center gap-4">
-                <div className="flex h-12 min-w-[80px] items-center justify-center rounded-2xl border border-white/12 bg-white/[0.025] px-4">
-                  <img
-                    src={portfolioProjects[activeProject].logo}
-                    alt={portfolioProjects[activeProject].name}
-                    className="max-h-7 w-auto object-contain"
-                  />
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-white">
-                    {portfolioProjects[activeProject].name}
-                  </p>
-                  <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-white/48">
-                    {portfolioProjects[activeProject].type}
-                  </p>
+              {/* seletores sobrepostos no topo do canvas */}
+              <div className="pointer-events-none absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-black/80 via-black/30 to-transparent pb-24 pt-5">
+                <div
+                  className="pointer-events-auto flex gap-2 overflow-x-auto px-5"
+                  style={{ scrollbarWidth: "none" }}
+                >
+                  {portfolioProjects.map((project, index) => (
+                    <button
+                      key={project.slug}
+                      onClick={() => setActiveProject(index)}
+                      className={`group shrink-0 flex flex-col items-center gap-2 rounded-2xl border px-5 pb-3 backdrop-blur-sm transition ${
+                        project.slug === "banco-bhg" || project.slug === "solumart-servicos"
+                          ? "pt-2"
+                          : "pt-4"
+                      } ${
+                        activeProject === index
+                          ? "border-brand/50 bg-brand-soft text-brand"
+                          : "border-white/12 bg-white/[0.04] text-white/56 hover:border-white/24 hover:text-white/80"
+                      }`}
+                    >
+                      <img
+                        src={project.logo}
+                        alt=""
+                        className={`w-auto object-contain transition ${
+                          project.slug === "banco-bhg" || project.slug === "solumart-servicos"
+                            ? "h-7 max-w-[96px]"
+                            : "h-5 max-w-[80px]"
+                        } ${activeProject === index ? "opacity-100" : "opacity-50 group-hover:opacity-70"}`}
+                      />
+                      <span className="whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.14em]">
+                        {project.name}
+                      </span>
+                    </button>
+                  ))}
                 </div>
               </div>
 
-              <p className="min-w-0 flex-1 text-sm leading-7 text-white/68">
-                {portfolioProjects[activeProject].description}
+              {/* info do projeto sobreposta no rodapé do canvas */}
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/92 via-black/55 to-transparent px-5 pb-6 pt-28">
+                <div className="pointer-events-auto flex flex-col gap-4 lg:flex-row lg:items-end lg:gap-8">
+                  <div className="flex shrink-0 items-center gap-3">
+                    <div className="flex h-10 min-w-[68px] items-center justify-center rounded-xl border border-white/12 bg-white/[0.06] px-3 backdrop-blur-sm">
+                      <img
+                        src={portfolioProjects[activeProject].logo}
+                        alt={portfolioProjects[activeProject].name}
+                        className="max-h-6 w-auto object-contain"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-white">
+                        {portfolioProjects[activeProject].name}
+                      </p>
+                      <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-white/48">
+                        {portfolioProjects[activeProject].type}
+                      </p>
+                    </div>
+                  </div>
+
+                  <p className="min-w-0 flex-1 text-sm leading-6 text-white/72">
+                    {portfolioProjects[activeProject].description}
+                  </p>
+
+                  <div className="flex shrink-0 flex-wrap items-center gap-3 lg:flex-col lg:items-end">
+                    <div className="flex flex-wrap gap-1.5">
+                      {portfolioProjects[activeProject].tech.map((t) => (
+                        <span
+                          key={t}
+                          className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.08] px-3 py-1.5 font-mono text-[11px] text-white/72 backdrop-blur-sm"
+                        >
+                          <span className="size-1.5 rounded-full bg-brand/70" />
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                    <a
+                      href={portfolioProjects[activeProject].link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand-soft px-5 py-2.5 text-sm font-medium text-brand transition hover:bg-brand-soft/70"
+                    >
+                      Ver projeto
+                      <ArrowUpRight className="size-4" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile portfolio */}
+            <div data-reveal className="mt-6 lg:hidden">
+              {/* Project selector pills */}
+              <div
+                className="flex gap-2 overflow-x-auto pb-1"
+                style={{ scrollbarWidth: "none" }}
+              >
+                {portfolioProjects.map((project, index) => (
+                  <button
+                    key={project.slug}
+                    onClick={() => {
+                      setActiveProject(index);
+                      setMobileImageIndex(0);
+                    }}
+                    className={`shrink-0 flex items-center gap-2 rounded-full border px-3 py-2 transition ${
+                      activeProject === index
+                        ? "border-brand/50 bg-brand-soft text-brand"
+                        : "border-white/12 bg-white/[0.04] text-white/56"
+                    }`}
+                  >
+                    <img
+                      src={project.logo}
+                      alt=""
+                      className={`h-4 w-auto object-contain ${activeProject === index ? "opacity-100" : "opacity-50"}`}
+                    />
+                    <span className="whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.14em]">
+                      {project.name}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Image viewer */}
+              <div
+                className="relative mt-4 aspect-[16/10] overflow-hidden rounded-xl bg-[#080808]"
+                onTouchStart={(e) => {
+                  touchStartX.current = e.touches[0].clientX;
+                }}
+                onTouchEnd={(e) => {
+                  const delta =
+                    touchStartX.current - e.changedTouches[0].clientX;
+                  const total =
+                    portfolioProjects[activeProject].images.length;
+                  if (delta > 50 && mobileImageIndex < total - 1)
+                    setMobileImageIndex((i) => i + 1);
+                  else if (delta < -50 && mobileImageIndex > 0)
+                    setMobileImageIndex((i) => i - 1);
+                }}
+              >
+                <img
+                  src={
+                    portfolioProjects[activeProject].images[mobileImageIndex]
+                  }
+                  alt=""
+                  className="h-full w-full object-contain"
+                />
+                <button
+                  onClick={() => {
+                    setLightboxIndex(mobileImageIndex);
+                    setLightboxOpen(true);
+                  }}
+                  className="absolute right-3 top-3 flex size-8 items-center justify-center rounded-lg bg-black/65 text-white backdrop-blur-sm"
+                  aria-label="Ampliar imagem"
+                >
+                  <Maximize2 className="size-4" />
+                </button>
+                {mobileImageIndex > 0 && (
+                  <button
+                    onClick={() => setMobileImageIndex((i) => i - 1)}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 flex size-9 items-center justify-center rounded-lg bg-black/65 text-white backdrop-blur-sm"
+                  >
+                    <ChevronLeft className="size-5" />
+                  </button>
+                )}
+                {mobileImageIndex <
+                  portfolioProjects[activeProject].images.length - 1 && (
+                  <button
+                    onClick={() => setMobileImageIndex((i) => i + 1)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 flex size-9 items-center justify-center rounded-lg bg-black/65 text-white backdrop-blur-sm"
+                  >
+                    <ChevronRight className="size-5" />
+                  </button>
+                )}
+              </div>
+
+              {/* Counter */}
+              <p className="mt-2 text-center font-mono text-[11px] text-white/36">
+                {mobileImageIndex + 1} /{" "}
+                {portfolioProjects[activeProject].images.length}
               </p>
 
-              <div className="flex shrink-0 flex-wrap items-center gap-4 lg:flex-col lg:items-end">
-                <div className="flex flex-wrap gap-1.5">
+              {/* Project info card */}
+              <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.03] p-5">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 min-w-[56px] items-center justify-center rounded-lg border border-white/10 bg-white/[0.05] px-3">
+                    <img
+                      src={portfolioProjects[activeProject].logo}
+                      alt={portfolioProjects[activeProject].name}
+                      className="max-h-5 w-auto object-contain"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-white">
+                      {portfolioProjects[activeProject].name}
+                    </p>
+                    <p className="mt-0.5 font-mono text-[10px] uppercase tracking-[0.14em] text-white/44">
+                      {portfolioProjects[activeProject].type}
+                    </p>
+                  </div>
+                </div>
+                <p className="mt-4 text-sm leading-6 text-white/68">
+                  {portfolioProjects[activeProject].description}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-1.5">
                   {portfolioProjects[activeProject].tech.map((t) => (
                     <span
                       key={t}
-                      className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.035] px-3 py-1.5 font-mono text-[11px] text-white/72"
+                      className="inline-flex items-center gap-1.5 rounded-full bg-white/[0.07] px-3 py-1 font-mono text-[11px] text-white/64"
                     >
                       <span className="size-1.5 rounded-full bg-brand/70" />
                       {t}
@@ -916,7 +1128,7 @@ export default function LandingPage() {
                   href={portfolioProjects[activeProject].link}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand-soft px-5 py-2.5 text-sm font-medium text-brand transition hover:bg-brand-soft/70"
+                  className="mt-5 inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand-soft px-5 py-2.5 text-sm font-medium text-brand"
                 >
                   Ver projeto
                   <ArrowUpRight className="size-4" />
@@ -961,7 +1173,6 @@ export default function LandingPage() {
                 variant="sidebar"
                 borderRadius="2.4rem"
                 enableHover={false}
-                blur={28}
                 className="!cursor-default"
               >
                 <div className="w-full px-6 py-12 text-center sm:px-12 sm:py-16">
@@ -1003,6 +1214,57 @@ export default function LandingPage() {
             </div>
           </div>
         </section>
+
+        {/* Lightbox */}
+        {lightboxOpen && (
+          <div
+            className="fixed inset-0 z-[200] flex items-center justify-center bg-black/96"
+            onClick={() => setLightboxOpen(false)}
+          >
+            <img
+              src={
+                portfolioProjects[activeProject].images[lightboxIndex]
+              }
+              alt=""
+              className="max-h-[92vh] max-w-[96vw] object-contain"
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              onClick={() => setLightboxOpen(false)}
+              className="absolute right-4 top-4 flex size-10 items-center justify-center rounded-full bg-white/12 text-white backdrop-blur-sm"
+              aria-label="Fechar"
+            >
+              <X className="size-5" />
+            </button>
+            {lightboxIndex > 0 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex((i) => i - 1);
+                }}
+                className="absolute left-3 top-1/2 -translate-y-1/2 flex size-11 items-center justify-center rounded-full bg-white/12 text-white backdrop-blur-sm"
+              >
+                <ChevronLeft className="size-6" />
+              </button>
+            )}
+            {lightboxIndex <
+              portfolioProjects[activeProject].images.length - 1 && (
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setLightboxIndex((i) => i + 1);
+                }}
+                className="absolute right-3 top-1/2 -translate-y-1/2 flex size-11 items-center justify-center rounded-full bg-white/12 text-white backdrop-blur-sm"
+              >
+                <ChevronRight className="size-6" />
+              </button>
+            )}
+            <p className="absolute bottom-5 left-1/2 -translate-x-1/2 font-mono text-xs text-white/40">
+              {lightboxIndex + 1} /{" "}
+              {portfolioProjects[activeProject].images.length}
+            </p>
+          </div>
+        )}
 
         <footer className="relative border-t border-white/8 py-10">
           <div className="shell flex flex-col items-center justify-between gap-4 sm:flex-row">
