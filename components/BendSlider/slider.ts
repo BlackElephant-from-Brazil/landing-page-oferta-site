@@ -18,19 +18,27 @@ varying vec2 vUv;
 void main() {
   float pRatio = uPlaneSize.x / uPlaneSize.y;
   float iRatio = uImageSize.x / uImageSize.y;
-  vec2 ratio = vec2(
-    min(pRatio / iRatio, 1.0),
-    min((1.0 / pRatio) / (1.0 / iRatio), 1.0)
+
+  // object-fit: contain — imagem inteira visível, áreas vazias transparentes
+  float wider = step(iRatio, pRatio);
+  vec2 displayFrac = mix(
+    vec2(1.0, pRatio / iRatio),
+    vec2(iRatio / pRatio, 1.0),
+    wider
   );
-  vec2 uv = vec2(
-    vUv.x * ratio.x + (1.0 - ratio.x) * 0.5,
-    vUv.y * ratio.y + (1.0 - ratio.y) * 0.5
-  );
+
+  vec2 uv = (vUv - 0.5) / displayFrac + 0.5;
+
+  vec2 inB = step(vec2(0.0), uv) * step(uv, vec2(1.0));
+  float mask = inB.x * inB.y;
+
+  uv = clamp(uv, 0.0, 1.0);
+
   float shift = uVelocity * 0.00035;
   float r = texture2D(uTexture, uv + vec2(shift, 0.0)).r;
   float g = texture2D(uTexture, uv).g;
   float b = texture2D(uTexture, uv - vec2(shift, 0.0)).b;
-  gl_FragColor = vec4(r, g, b, 1.0);
+  gl_FragColor = vec4(r * mask, g * mask, b * mask, mask);
 }
 `;
 
@@ -53,7 +61,7 @@ const DEFAULT_SETTINGS: SliderSettings = {
   distortionDecay: 0.94,
   maxCurvature: 120,
   distortionRadius: 700,
-  autoScrollSpeed: 0.6,
+  autoScrollSpeed: 0,
 };
 
 export class BendSlider {
@@ -90,6 +98,8 @@ export class BendSlider {
   private boundPointerUp: (e: PointerEvent) => void;
   private boundKeyDown: (e: KeyboardEvent) => void;
   private boundResize: () => void;
+  private boundMouseEnter: () => void;
+  private boundMouseLeave: () => void;
 
   private isDragging = false;
   private dragStartX = 0;
@@ -98,6 +108,7 @@ export class BendSlider {
   private imageUrls: string[] = [];
   private isUserInteracting = false;
   private interactionTimeout = 0;
+  private isMouseOver = false;
 
   constructor(container: HTMLElement, settings?: Partial<SliderSettings>) {
     this.container = container;
@@ -128,8 +139,12 @@ export class BendSlider {
     this.boundPointerUp = this.onPointerUp.bind(this);
     this.boundKeyDown = this.onKeyDown.bind(this);
     this.boundResize = this.onResize.bind(this);
+    this.boundMouseEnter = () => { this.isMouseOver = true; };
+    this.boundMouseLeave = () => { this.isMouseOver = false; };
 
-    container.addEventListener("wheel", this.boundWheel, { passive: true });
+    container.addEventListener("wheel", this.boundWheel, { passive: false });
+    container.addEventListener("mouseenter", this.boundMouseEnter);
+    container.addEventListener("mouseleave", this.boundMouseLeave);
     container.addEventListener("pointerdown", this.boundPointerDown);
     window.addEventListener("pointermove", this.boundPointerMove);
     window.addEventListener("pointerup", this.boundPointerUp);
@@ -175,7 +190,7 @@ export class BendSlider {
 
   private computeLayout(count: number) {
     const { w, h } = this.size();
-    this.planeH = h * 0.72;
+    this.planeH = h * 0.88;
     this.planeW = this.planeH * 1.42;
     this.gap = 24;
     this.slideUnit = this.planeW + this.gap;
@@ -248,10 +263,6 @@ export class BendSlider {
       }
     }
 
-    if (!this.isUserInteracting && this.slides.length > 0) {
-      this.targetPosition += this.settings.autoScrollSpeed;
-    }
-
     this.currentPosition +=
       (this.targetPosition - this.currentPosition) * this.settings.smoothing;
 
@@ -320,6 +331,7 @@ export class BendSlider {
   }
 
   private onWheel(e: WheelEvent) {
+    if (this.isMouseOver) e.preventDefault();
     const wheelStrength = Math.abs(e.deltaY) * 0.001;
     this.targetDistortionFactor = Math.min(1.0, this.targetDistortionFactor + wheelStrength);
     this.targetPosition += e.deltaY * this.settings.wheelSensitivity;
@@ -416,6 +428,8 @@ export class BendSlider {
     clearTimeout(this.scrollTimeout);
     clearTimeout(this.interactionTimeout);
     this.container.removeEventListener("wheel", this.boundWheel);
+    this.container.removeEventListener("mouseenter", this.boundMouseEnter);
+    this.container.removeEventListener("mouseleave", this.boundMouseLeave);
     this.container.removeEventListener("pointerdown", this.boundPointerDown);
     window.removeEventListener("pointermove", this.boundPointerMove);
     window.removeEventListener("pointerup", this.boundPointerUp);

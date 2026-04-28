@@ -18,16 +18,40 @@ export function GlassDistortionFilter() {
         >
           <feTurbulence
             type="fractalNoise"
-            baseFrequency="0.002 0.002"
-            numOctaves="2"
-            seed="92"
-            result="noise"
+            baseFrequency="0.01 0.01"
+            numOctaves="1"
+            seed="5"
+            result="turbulence"
           />
-          <feGaussianBlur in="noise" stdDeviation="2" result="blurred" />
+          <feComponentTransfer in="turbulence" result="mapped">
+            <feFuncR type="gamma" amplitude="1" exponent="10" offset="0.5" />
+            <feFuncG type="gamma" amplitude="0" exponent="1" offset="0" />
+            <feFuncB type="gamma" amplitude="0" exponent="1" offset="0.5" />
+          </feComponentTransfer>
+          <feGaussianBlur in="turbulence" stdDeviation="3" result="softMap" />
+          <feSpecularLighting
+            in="softMap"
+            surfaceScale="5"
+            specularConstant="1"
+            specularExponent="100"
+            lightingColor="white"
+            result="specLight"
+          >
+            <fePointLight x="-200" y="-200" z="300" />
+          </feSpecularLighting>
+          <feComposite
+            in="specLight"
+            operator="arithmetic"
+            k1="0"
+            k2="1"
+            k3="1"
+            k4="0"
+            result="litImage"
+          />
           <feDisplacementMap
             in="SourceGraphic"
-            in2="blurred"
-            scale="28"
+            in2="softMap"
+            scale="150"
             xChannelSelector="R"
             yChannelSelector="G"
           />
@@ -57,7 +81,7 @@ export function LiquidGlassV2({
   borderRadius = "1.8rem",
   enableHover = true,
   enableTilt = false,
-  blur = 4,
+  blur = 20,
   variant = "default",
   onDragOver,
   onDrop,
@@ -105,7 +129,7 @@ export function LiquidGlassV2({
   return (
     <motion.div
       ref={containerRef}
-      className={`liquidGlass-wrapper relative flex w-full overflow-hidden ${className}`}
+      className={`liquidGlass-wrapper relative flex overflow-hidden cursor-pointer ${className}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       onDragOver={onDragOver}
@@ -115,8 +139,7 @@ export function LiquidGlassV2({
         borderRadius,
         fontWeight: 600,
         color: "white",
-        boxShadow:
-          "0 6px 24px rgba(0, 0, 0, 0.2), 0 0 1px rgba(255, 255, 255, 0.1)",
+        boxShadow: "0 4px 24px rgba(0, 0, 0, 0.1), 0 0 1px rgba(255, 255, 255, 0.1)",
         transition: enableHover ? "all 0.4s cubic-bezier(0.175, 0.885, 0.32, 2.2)" : undefined,
         transformStyle: enableTilt ? "preserve-3d" : undefined,
         rotateX: enableTilt ? rotateX : 0,
@@ -132,31 +155,31 @@ export function LiquidGlassV2({
         transition: { duration: 0.4, ease: [0.175, 0.885, 0.32, 2.2] }
       } : {}}
     >
-      {/* Backdrop blur + SVG lens distortion aplicada ao backdrop */}
+      {/* Glass effect layer with SVG filter */}
       <div
         className="liquidGlass-effect absolute z-0 inset-0 overflow-hidden"
         style={{
-          backdropFilter: `url(#glass-distortion) blur(${blur}px) saturate(120%)`,
-          WebkitBackdropFilter: `url(#glass-distortion) blur(${blur}px) saturate(120%)`,
+          backdropFilter: `blur(${blur}px) saturate(140%)`,
+          WebkitBackdropFilter: `blur(${blur}px) saturate(140%)`,
+          filter: "url(#glass-distortion)",
           isolation: "isolate",
         }}
       />
 
-      {/* Dark tint for text readability */}
+      {/* Tint layer - dark gray for readability */}
       <div
         className="liquidGlass-tint absolute z-[1] inset-0"
         style={{
-          background:
-            "linear-gradient(145deg, rgba(12, 12, 12, 0.52), rgba(12, 12, 12, 0.32) 55%, rgba(12, 12, 12, 0.44))",
+          background: "rgba(18, 18, 18, 0.55)",
         }}
       />
 
-      {/* White inner glow — characteristic glass edge */}
+      {/* Shine layer - subtle glass edge highlights */}
       <div
-        className="liquidGlass-shine absolute inset-0 z-[2] pointer-events-none"
+        className="liquidGlass-shine absolute inset-0 z-[2] overflow-hidden"
         style={{
           boxShadow:
-            "inset 0px 0px 18px -6px rgba(255, 255, 255, 0.22)",
+            "inset 1px 1px 0 0 rgba(255, 255, 255, 0.12), inset -1px -1px 0 0 rgba(255, 255, 255, 0.06)",
           borderRadius,
         }}
       />
@@ -165,7 +188,7 @@ export function LiquidGlassV2({
       <div
         className="absolute inset-0 z-[2] pointer-events-none"
         style={{
-          border: "1px solid rgba(255, 255, 255, 0.14)",
+          border: "1px solid rgba(255, 255, 255, 0.12)",
           borderRadius,
         }}
       />
