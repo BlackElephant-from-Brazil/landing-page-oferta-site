@@ -1,18 +1,17 @@
-export interface LandingOffer {
+export interface LandingService {
+  iconKey: string;
   title: string;
-  price: string;
   subtitle: string;
   description: string;
   features: string[];
-  highlight?: string;
+  badge?: string;
 }
 
-export interface SupportPlan {
+export interface PartnershipPillar {
+  iconKey: string;
   title: string;
-  price: string;
-  afterPrice: string;
   description: string;
-  features: string[];
+  tags: string[];
 }
 
 export interface FaqItem {
@@ -34,7 +33,6 @@ export interface ProofPlaceholder {
 export interface LandingPageContent {
   hero: {
     headline: string;
-    abVariants: string[];
     subheadline: string;
     primaryCta: string;
     secondaryCta: string;
@@ -46,14 +44,8 @@ export interface LandingPageContent {
     title: string;
     description: string;
   }[];
-  offers: LandingOffer[];
-  supportPlans: SupportPlan[];
-  addonEmail: {
-    title: string;
-    price: string;
-    afterPrice: string;
-    description: string;
-  };
+  services: LandingService[];
+  partnershipPillars: PartnershipPillar[];
   process: {
     title: string;
     description: string;
@@ -61,24 +53,15 @@ export interface LandingPageContent {
   companyTimeline: TimelineEntry[];
   proofPlaceholders: ProofPlaceholder[];
   faq: FaqItem[];
-  contact: {
-    whatsappNumber: string;
-    whatsappLabel: string;
-    whatsappMessage: string;
-  };
 }
 
 export const landingContent: LandingPageContent = {
   hero: {
     headline: "Seu site institucional em 72h",
-    abVariants: [
-      "Seu site premium pronto em até 72 horas.",
-      "Uma presença digital elegante para vender melhor.",
-    ],
     subheadline:
       "Criamos sites, landing pages e apps com visual premium, segurança e publicação rápida.",
-    primaryCta: "Solicitar orçamento no WhatsApp",
-    secondaryCta: "Ver planos e ofertas",
+    primaryCta: "Solicitar um orçamento personalizado",
+    secondaryCta: "Conhecer nossos serviços",
     trustBadges: [
       "Hospedagem e domínio grátis",
       "100% responsivo",
@@ -108,13 +91,13 @@ export const landingContent: LandingPageContent = {
       description: "Soluções personalizadas para evoluir sua operação digital.",
     },
   ],
-  offers: [
+  services: [
     {
-      title: "Comprar o site",
-      price: "R$ 1.198,00",
-      subtitle: "Institucional sob medida",
+      iconKey: "Globe",
+      title: "Site Institucional",
+      subtitle: "Autoridade digital para sua marca",
       description:
-        "Para quem precisa de uma presença digital forte e elegante.",
+        "Para empresas que precisam transmitir credibilidade e fechar negócios pelo digital.",
       features: [
         "Design premium responsivo",
         "SEO completo",
@@ -123,74 +106,102 @@ export const landingContent: LandingPageContent = {
       ],
     },
     {
-      title: "Comprar o site com teste A/B",
-      price: "R$ 1.998,00",
-      subtitle: "Versão orientada à otimização",
-      description: "Inclui variações estratégicas para otimizar a conversão.",
+      iconKey: "Layers3",
+      title: "Landing Page",
+      subtitle: "Conversão focada em resultado",
+      description:
+        "Páginas de alta performance para campanhas, ofertas e captação de leads qualificados.",
       features: [
-        "Tudo do site institucional",
-        "Setup de experimento A/B",
-        "Base para decisões com dados",
-        "Melhoria contínua de conversão",
-      ],
-      highlight: "Mais estratégico",
-    },
-    {
-      title: "Comprar a landing page",
-      price: "R$ 798,00",
-      subtitle: "LP focada em geração de demanda",
-      description: "Ideal para campanhas, ofertas e captação de leads.",
-      features: [
-        "Página única de alta conversão",
-        "CTA e narrativa comercial",
-        "Visual pronto para tráfego pago",
+        "Narrativa comercial estratégica",
+        "Otimizada para tráfego pago",
+        "CTA e formulário de captação",
         "Entrega rápida",
       ],
+      badge: "Mais pedido",
     },
     {
-      title: "Comprar a landing page com teste A/B",
-      price: "R$ 1.298,00",
-      subtitle: "LP + otimização de performance",
-      description: "Para quem quer testar criativos e vender com mais precisão.",
+      iconKey: "Smartphone",
+      title: "Aplicativo",
+      subtitle: "Experiência digital sob medida",
+      description:
+        "Apps web e mobile com UX personalizada para o fluxo real do seu negócio.",
       features: [
-        "Tudo da landing page",
-        "Variações estratégicas para teste",
-        "Mais clareza sobre performance",
-        "Base para escalar campanhas",
+        "Design de experiência (UX/UI)",
+        "Web app ou mobile nativo",
+        "Backend e integração de APIs",
+        "Publicação assistida",
       ],
-      highlight: "Ideal para tráfego",
+    },
+    {
+      iconKey: "Settings2",
+      title: "Sistema Personalizado",
+      subtitle: "Software que serve ao seu processo",
+      description:
+        "ERPs, CRMs e painéis de gestão construídos para a operação real da sua empresa.",
+      features: [
+        "Levantamento de requisitos",
+        "Interface administrativa completa",
+        "Integrações com APIs externas",
+        "Treinamento e documentação",
+      ],
+    },
+    {
+      iconKey: "Workflow",
+      title: "Automação",
+      subtitle: "Menos operação, mais resultado",
+      description:
+        "Robôs de WhatsApp, integrações entre sistemas e fluxos automáticos que escalam o negócio.",
+      features: [
+        "Robô de WhatsApp (n8n, ManyChat)",
+        "Integração via Make ou Zapier",
+        "Funil e CRM automatizado",
+        "Relatórios em tempo real",
+      ],
+    },
+    {
+      iconKey: "ShoppingBag",
+      title: "E-commerce",
+      subtitle: "Loja online que vende de verdade",
+      description:
+        "Estrutura completa de vendas online com catálogo, checkout e gestão de pedidos.",
+      features: [
+        "Catálogo com variações de produto",
+        "Checkout otimizado",
+        "Integração com gateways de pagamento",
+        "Painel de gestão de pedidos",
+      ],
     },
   ],
-  supportPlans: [
+  partnershipPillars: [
     {
-      title: "Suporte mensal site / landing page",
-      price: "R$ 198,00/mês",
-      afterPrice: "Depois: R$ 70,00 por atualização",
-      description: "Mantém sua página atualizada sem perder ritmo.",
-      features: [
-        "Até 4 atualizações por mês",
-        "Ajustes visuais e textuais",
-        "Continuidade com padrão premium",
-      ],
+      iconKey: "RefreshCw",
+      title: "Atualizações recorrentes",
+      description:
+        "Mantemos sua presença sempre alinhada com a evolução do seu negócio.",
+      tags: ["Até 4 atualizações/mês", "Ajustes visuais e textuais", "Padrão premium contínuo"],
     },
     {
-      title: "Suporte mensal com teste A/B",
-      price: "R$ 298,00/mês",
-      afterPrice: "Depois: R$ 100,00 por atualização",
-      description: "Atualiza e otimiza a página com mais método.",
-      features: [
-        "Até 4 atualizações por mês",
-        "Manutenção contínua",
-        "Estratégia com teste A/B",
-      ],
+      iconKey: "ShieldCheck",
+      title: "Segurança e infraestrutura",
+      description:
+        "SSL ativo, backups regulares e monitoramento de disponibilidade para proteger sua operação.",
+      tags: ["SSL e HTTPS", "Backups automáticos", "Uptime monitorado"],
+    },
+    {
+      iconKey: "LineChart",
+      title: "Evolução orientada a dados",
+      description:
+        "Métricas reais para propor melhorias que fazem sentido para o seu objetivo.",
+      tags: ["Teste A/B estratégico", "Análise de performance", "Otimização contínua"],
+    },
+    {
+      iconKey: "MessageCircleMore",
+      title: "Suporte técnico direto",
+      description:
+        "Canal direto com o time para resolver urgências e ajustes técnicos sem burocracia.",
+      tags: ["Resposta rápida", "Canal direto com o time", "Sem fila de chamado"],
     },
   ],
-  addonEmail: {
-    title: "Google Workspace ou Microsoft 365 + ambiente digital seguro",
-    price: "R$ 99,00/mês",
-    afterPrice: "Após 5 e-mails: R$ 14,99/mês por novo e-mail",
-    description: "E-mail profissional com estrutura segura para a empresa.",
-  },
   process: [
     {
       title: "1. Briefing rápido e objetivo",
@@ -246,11 +257,11 @@ export const landingContent: LandingPageContent = {
     {
       question: "A entrega em até 72 horas vale para qualquer projeto?",
       answer:
-        "Vale para o escopo desta oferta. Projetos maiores podem exigir ajuste.",
+        "Vale para sites institucionais e landing pages dentro do escopo padrão. Projetos maiores (apps, sistemas, automações) têm prazo definido no orçamento personalizado.",
     },
     {
       question: "Hospedagem e domínio realmente já estão inclusos?",
-      answer: "Sim. A proposta já inclui hospedagem e domínio grátis.",
+      answer: "Sim. Todos os projetos de site e landing page incluem hospedagem e domínio grátis.",
     },
     {
       question: "O site fica preparado para celular e Google?",
@@ -259,22 +270,17 @@ export const landingContent: LandingPageContent = {
     {
       question: "Quando vale a pena escolher a versão com teste A/B?",
       answer:
-        "Quando você quer validar headline, CTA ou abordagem com mais precisão.",
+        "Quando você quer validar headline, CTA ou abordagem com mais precisão e tem tráfego suficiente para gerar dados confiáveis.",
     },
     {
-      question: "Como funciona o suporte mensal?",
-      answer: "Cada plano cobre até 4 atualizações mensais.",
+      question: "Como funciona o suporte contínuo?",
+      answer:
+        "Após a entrega, oferecemos planos de parceria para manter, otimizar e evoluir o que foi construído. Os detalhes são apresentados no orçamento conforme o projeto.",
     },
     {
       question: "Vocês também cuidam do ambiente de e-mail da empresa?",
       answer:
-        "Sim. Estruturamos Google Workspace ou Microsoft 365 com segurança.",
+        "Sim. Estruturamos Google Workspace ou Microsoft 365 com segurança e ambiente digital profissional.",
     },
   ],
-  contact: {
-    whatsappNumber: "+55 19 97805-5531",
-    whatsappLabel: "Falar agora no WhatsApp",
-    whatsappMessage:
-      "Olá, quero um orçamento para site, landing page ou app da BlackElephant.",
-  },
 };

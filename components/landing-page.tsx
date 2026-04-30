@@ -18,8 +18,13 @@ import {
   Lock,
   Maximize2,
   MessageCircleMore,
+  RefreshCw,
+  Settings2,
   ShieldCheck,
+  ShoppingBag,
+  Smartphone,
   Sparkles,
+  Workflow,
   X,
   Zap,
 } from "lucide-react";
@@ -27,20 +32,48 @@ import BrandLockup from "@/components/brand-lockup";
 import ParticleBackground from "@/components/particle-background";
 import SiteLoader from "@/components/site-loader";
 import FaqAccordion from "@/components/faq-accordion";
-import FloatingWhatsApp from "@/components/floating-whatsapp";
+import FloatingCTA from "@/components/floating-cta";
+import QuoteModal from "@/components/quote-modal";
 import { LiquidGlassV2 } from "@/components/liquid-glass-v2";
 import { landingContent } from "@/lib/landing-content";
-import { buildWhatsAppLink } from "@/lib/whatsapp";
 import { portfolioProjects } from "@/lib/portfolio-data";
 import BendSliderComponent from "@/components/BendSlider";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const trustIcons = [Globe, BadgeCheck, Lock, ShieldCheck];
+
+const serviceIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  Globe,
+  Layers3,
+  Smartphone,
+  Settings2,
+  Workflow,
+  ShoppingBag,
+};
+
+const partnershipIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+  RefreshCw,
+  ShieldCheck,
+  LineChart,
+  MessageCircleMore,
+};
+
+const heroServiceTypes = [
+  "App",
+  "Sistema",
+  "Landing Page",
+  "Site",
+  "Robô de WhatsApp",
+  "E-commerce",
+  "Blog",
+  "Outro",
+];
+
 const sectionIds = {
   shift: "diferencial",
-  offers: "ofertas",
-  support: "suporte",
+  services: "servicos",
+  partnership: "parceria",
   process: "processo",
   faq: "faq",
 } as const;
@@ -56,16 +89,14 @@ export default function LandingPage() {
   const [mobileImageIndex, setMobileImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
+  const [quoteModalOpen, setQuoteModalOpen] = useState(false);
   const touchStartX = useRef(0);
   const mainRef = useRef<HTMLDivElement>(null);
-  const heroPrimaryRef = useRef<HTMLAnchorElement>(null);
-  const finalCtaRef = useRef<HTMLAnchorElement>(null);
+  const heroPrimaryRef = useRef<HTMLButtonElement>(null);
+  const finalCtaRef = useRef<HTMLButtonElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
 
-  const whatsappLink = buildWhatsAppLink(
-    landingContent.contact.whatsappNumber,
-    landingContent.contact.whatsappMessage,
-  );
+  const openQuoteModal = () => setQuoteModalOpen(true);
 
   const progressSteps = [fontsReady, sceneReady, modelReady, minimumTimeReached];
   const progress =
@@ -149,7 +180,13 @@ export default function LandingPage() {
 
             const getDistance = () => {
               const trackRect = horizontalTrack.getBoundingClientRect();
-              return Math.max(0, trackRect.left + horizontalTrack.scrollWidth - window.innerWidth + 40);
+              return Math.max(
+                0,
+                trackRect.left +
+                  horizontalTrack.scrollWidth -
+                  window.innerWidth +
+                  40,
+              );
             };
 
             const tl = gsap.timeline({
@@ -202,11 +239,19 @@ export default function LandingPage() {
           horizontalTrack
             .querySelectorAll<HTMLElement>("[data-timeline-card]")
             .forEach((card) => {
-              const threshold = Math.max(0, card.offsetLeft - viewWidth * 0.55);
-              card.classList.toggle("timeline-card--active", scrollLeft >= threshold);
+              const threshold = Math.max(
+                0,
+                card.offsetLeft - viewWidth * 0.55,
+              );
+              card.classList.toggle(
+                "timeline-card--active",
+                scrollLeft >= threshold,
+              );
             });
         };
-        mobileScroller?.addEventListener("scroll", activateMobileCards, { passive: true });
+        mobileScroller?.addEventListener("scroll", activateMobileCards, {
+          passive: true,
+        });
         mobileScrollCleanup = () =>
           mobileScroller?.removeEventListener("scroll", activateMobileCards);
       }
@@ -246,12 +291,11 @@ export default function LandingPage() {
         onReady={() => setSceneReady(true)}
       />
 
-      <FloatingWhatsApp
-        href={whatsappLink}
-        label={landingContent.contact.whatsappLabel}
-      />
+      <FloatingCTA onClick={openQuoteModal} />
+      <QuoteModal open={quoteModalOpen} onClose={() => setQuoteModalOpen(false)} />
 
       <main ref={mainRef} className="relative z-10 overflow-hidden">
+        {/* ── Header ── */}
         <header className="sticky top-0 z-40 border-b border-white/10 bg-[#050605]/45 backdrop-blur-xl">
           <div className="shell flex items-center justify-between py-3.5">
             <BrandLockup compact />
@@ -263,10 +307,10 @@ export default function LandingPage() {
                 Diferencial
               </a>
               <a
-                href={`#${sectionIds.offers}`}
+                href={`#${sectionIds.services}`}
                 className="rounded-full px-3 py-2 transition hover:bg-white/[0.05] hover:text-white"
               >
-                Ofertas
+                Serviços
               </a>
               <a
                 href={`#${sectionIds.process}`}
@@ -281,15 +325,14 @@ export default function LandingPage() {
                 FAQ
               </a>
             </nav>
-            <a
-              href={whatsappLink}
-              target="_blank"
-              rel="noreferrer"
+            <button
+              type="button"
+              onClick={openQuoteModal}
               className="inline-flex min-h-11 items-center gap-2 rounded-full border border-white/14 bg-white/[0.04] px-4 py-2 text-sm font-medium text-white transition hover:border-brand/45 hover:bg-white/[0.08]"
             >
-              <MessageCircleMore className="size-4" />
-              <span className="hidden sm:inline">WhatsApp</span>
-            </a>
+              <ArrowRight className="size-4 text-brand" />
+              <span className="hidden sm:inline">Orçamento</span>
+            </button>
           </div>
           <div
             ref={progressBarRef}
@@ -299,10 +342,14 @@ export default function LandingPage() {
           />
         </header>
 
+        {/* ── Hero ── */}
         <section className="relative isolate flex min-h-[calc(100svh-70px)] items-center">
           <div className="shell relative z-10 grid w-full min-w-0 items-center gap-12 py-14 sm:py-16 lg:grid-cols-[1.02fr_0.98fr] lg:gap-14 lg:py-20">
             <div className="min-w-0 max-w-3xl">
-              <div data-reveal className="inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/[0.035] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-white/78 backdrop-blur-md">
+              <div
+                data-reveal
+                className="inline-flex items-center gap-2 rounded-full border border-white/14 bg-white/[0.035] px-4 py-2 font-mono text-[11px] uppercase tracking-[0.18em] text-white/78 backdrop-blur-md"
+              >
                 <span
                   className="size-1.5 rounded-full bg-brand"
                   style={{ animation: "be-pulse-soft 2.4s ease-in-out infinite" }}
@@ -326,12 +373,14 @@ export default function LandingPage() {
                 {landingContent.hero.subheadline}
               </p>
 
-              <div data-reveal className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
-                <a
+              <div
+                data-reveal
+                className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center"
+              >
+                <button
                   ref={heroPrimaryRef}
-                  href={whatsappLink}
-                  target="_blank"
-                  rel="noreferrer"
+                  type="button"
+                  onClick={openQuoteModal}
                   className="group relative inline-flex min-h-12 items-center justify-center gap-3 overflow-hidden rounded-full bg-brand px-7 py-3 text-sm font-medium text-brand-foreground shadow-[0_16px_44px_rgba(57,254,21,0.18)] transition hover:translate-y-[-1px] hover:bg-[#58ff39]"
                 >
                   <span className="relative z-10">
@@ -342,9 +391,9 @@ export default function LandingPage() {
                     aria-hidden="true"
                     className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-white/20 opacity-0 transition-all duration-700 group-hover:left-[120%] group-hover:opacity-100"
                   />
-                </a>
+                </button>
                 <a
-                  href={`#${sectionIds.offers}`}
+                  href={`#${sectionIds.services}`}
                   className="inline-flex min-h-12 items-center justify-center gap-3 rounded-full border border-white/14 bg-white/[0.035] px-6 py-3 text-sm font-medium text-white backdrop-blur-md transition hover:border-brand/40 hover:bg-white/[0.07]"
                 >
                   {landingContent.hero.secondaryCta}
@@ -352,7 +401,10 @@ export default function LandingPage() {
                 </a>
               </div>
 
-              <div data-reveal className="mt-12 grid max-w-2xl grid-cols-3 gap-3 border-y border-white/12 py-5">
+              <div
+                data-reveal
+                className="mt-12 grid max-w-2xl grid-cols-3 gap-3 border-y border-white/12 py-5"
+              >
                 {[
                   ["72h", "para publicar"],
                   ["SEO", "base completa"],
@@ -370,6 +422,7 @@ export default function LandingPage() {
               </div>
             </div>
 
+            {/* ── Hero Card ── */}
             <div data-reveal className="relative min-w-0">
               <LiquidGlassV2
                 variant="sidebar"
@@ -381,33 +434,38 @@ export default function LandingPage() {
                 <div className="w-full p-5 sm:p-7">
                   <div className="flex items-start justify-between gap-6 border-b border-white/12 pb-6">
                     <p className="max-w-[12rem] font-mono text-[11px] uppercase leading-5 tracking-[0.16em] text-white/58">
-                      Oferta rápida com estrutura premium e publicação assistida
+                      Orçamento personalizado para o seu projeto
                     </p>
                     <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-brand text-brand-foreground">
                       <ArrowUpRight className="size-5" />
                     </span>
                   </div>
 
-                  <div className="py-9">
-                    <div>
-                      <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/50">
-                        A partir de
-                      </p>
-                      <p className="mt-3 text-[3.1rem] font-medium leading-none text-brand sm:text-[4rem]">
-                        R$ 198,00
-                      </p>
-                      <h3 className="mt-6 max-w-sm text-2xl font-medium leading-tight tracking-normal text-white">
-                        Landing pages, sites e apps com acabamento de marca grande.
-                      </h3>
+                  <div className="py-8">
+                    <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/50">
+                      O que você precisa?
+                    </p>
+                    <div className="mt-4 grid grid-cols-2 gap-2">
+                      {heroServiceTypes.map((type) => (
+                        <span
+                          key={type}
+                          className="inline-flex min-h-[40px] items-center rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-[11px] text-white/56"
+                        >
+                          {type}
+                        </span>
+                      ))}
                     </div>
+                    <h3 className="mt-6 max-w-sm text-2xl font-medium leading-tight tracking-normal text-white">
+                      Tecnologia com identidade para marcas que precisam crescer.
+                    </h3>
                   </div>
 
                   <p className="border-t border-white/12 pt-6 text-sm leading-7 text-white/68">
-                    {landingContent.offers[0].description}
+                    {landingContent.services[0].description}
                   </p>
 
                   <ul className="mt-6 space-y-2.5">
-                    {landingContent.offers[0].features.map((feature) => (
+                    {landingContent.services[0].features.map((feature) => (
                       <li
                         key={feature}
                         className="flex items-center gap-3 text-sm text-white/82"
@@ -456,15 +514,14 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* ── Marquee ── */}
         <section
           aria-label="Selo de confiança"
           className="marquee-shell relative overflow-hidden border-y border-white/10 bg-white/[0.01] py-5 backdrop-blur-sm"
         >
           <div
             className="marquee-track flex w-max gap-16 whitespace-nowrap px-8"
-            style={{
-              animation: "be-marquee 34s linear infinite",
-            }}
+            style={{ animation: "be-marquee 34s linear infinite" }}
           >
             {Array.from({ length: 3 }).flatMap((_, group) =>
               landingContent.hero.trustBadges.map((badge, index) => (
@@ -480,10 +537,8 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section
-          id={sectionIds.shift}
-          className="section-band"
-        >
+        {/* ── Diferencial ── */}
+        <section id={sectionIds.shift} className="section-band">
           <div className="shell">
             <div className="grid min-w-0 gap-14 lg:grid-cols-[1.05fr_0.95fr]">
               <div data-reveal className="min-w-0">
@@ -509,9 +564,7 @@ export default function LandingPage() {
                       <span className="font-mono text-[11px] uppercase tracking-[0.16em] text-brand">
                         0{index + 1}
                       </span>
-                      <p className="text-sm leading-7 text-white/72">
-                        {point}
-                      </p>
+                      <p className="text-sm leading-7 text-white/72">{point}</p>
                     </div>
                   ))}
                 </div>
@@ -551,192 +604,160 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <section
-          id={sectionIds.offers}
-          className="section-band-muted"
-        >
+        {/* ── Serviços ── */}
+        <section id={sectionIds.services} className="section-band-muted">
           <div className="shell">
             <div data-reveal className="section-heading-row min-w-0">
               <div className="max-w-3xl">
                 <span className="section-kicker">
                   <Zap className="size-3.5 text-brand" />
-                  Comprar
+                  Serviços
                 </span>
                 <h2 className="section-title mt-6">
-                  Escolha a oferta certa e coloque sua marca no ar.
+                  Tecnologia sob medida para cada etapa do seu negócio.
                 </h2>
               </div>
               <p className="max-w-md font-mono text-xs leading-6 text-white/56">
-                As versões com teste A/B são para quem quer otimizar com mais
-                precisão e escalar com dados.
+                Do site institucional ao sistema personalizado — entregamos com
+                código próprio, visual premium e publicação assistida.
               </p>
             </div>
 
-            <div className="mt-12 grid items-start gap-8 lg:grid-cols-2">
-              {landingContent.offers.map((offer) => (
-                <div key={offer.title} data-reveal className="relative h-full pt-4">
-                  {offer.highlight ? (
-                    <>
-                      <div
-                        aria-hidden="true"
-                        className="pointer-events-none absolute inset-0 top-4 rounded-[2.05rem] opacity-80"
-                        style={{
-                          background:
-                            "linear-gradient(135deg, rgba(57,254,21,0.55), rgba(57,254,21,0.05) 50%, rgba(57,254,21,0.4))",
-                          animation: "be-glow-pulse 3.6s ease-in-out infinite",
-                          filter: "blur(0.5px)",
-                        }}
-                      />
-                      <div className="absolute left-1/2 top-0 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-brand/50 bg-[#040904]/90 px-3.5 py-1.5 shadow-[0_0_18px_rgba(57,254,21,0.28)] backdrop-blur-sm sm:left-5 sm:translate-x-0">
+            <div className="mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {landingContent.services.map((service) => {
+                const Icon =
+                  serviceIconMap[service.iconKey] ?? Sparkles;
+                return (
+                  <div
+                    key={service.title}
+                    data-reveal
+                    className="relative h-full"
+                  >
+                    {service.badge ? (
+                      <div className="absolute left-1/2 -top-3.5 z-20 flex -translate-x-1/2 items-center gap-2 rounded-full border border-brand/50 bg-[#040904]/90 px-3.5 py-1.5 shadow-[0_0_18px_rgba(57,254,21,0.28)] backdrop-blur-sm sm:left-5 sm:translate-x-0">
                         <span
                           className="size-1.5 rounded-full bg-brand"
-                          style={{ animation: "be-pulse-soft 2s ease-in-out infinite" }}
+                          style={{
+                            animation: "be-pulse-soft 2s ease-in-out infinite",
+                          }}
                         />
                         <span className="whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.18em] text-brand">
-                          {offer.highlight}
+                          {service.badge}
                         </span>
                       </div>
-                    </>
-                  ) : null}
-                  <LiquidGlassV2
-                    variant="sidebar"
-                    borderRadius="2rem"
-                    enableHover={false}
-                    className="h-full !cursor-default"
-                  >
-                    <div className="flex min-h-[520px] w-full flex-col p-6 sm:p-8 lg:min-h-[560px]">
-                      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                        <div className="min-w-0">
-                          <h3 className="text-xl font-medium leading-tight tracking-normal text-white sm:text-[1.35rem]">
-                            {offer.title}
-                          </h3>
-                          <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.16em] text-white/48">
-                            {offer.subtitle}
-                          </p>
+                    ) : null}
+                    <LiquidGlassV2
+                      variant="sidebar"
+                      borderRadius="2rem"
+                      enableHover={false}
+                      className="h-full !cursor-default"
+                    >
+                      <div className="flex h-full w-full flex-col p-6 sm:p-7">
+                        <div className="inline-flex w-fit rounded-2xl border border-brand/25 bg-brand-soft p-3">
+                          <Icon className="size-5 text-brand" />
                         </div>
-                        <p className="shrink-0 text-2xl font-medium leading-none text-brand sm:text-[1.45rem]">
-                          {offer.price}
+                        <h3 className="mt-5 text-xl font-medium leading-tight tracking-normal text-white">
+                          {service.title}
+                        </h3>
+                        <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.16em] text-white/44">
+                          {service.subtitle}
                         </p>
+                        <p className="mt-4 flex-1 text-sm leading-7 text-white/68">
+                          {service.description}
+                        </p>
+                        <ul className="mt-5 space-y-2.5">
+                          {service.features.map((feature) => (
+                            <li
+                              key={feature}
+                              className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.02] px-3.5 py-2.5 text-xs text-white/76 sm:text-sm"
+                            >
+                              <span className="flex size-4 shrink-0 items-center justify-center rounded-full border border-brand/25 bg-brand-soft">
+                                <Check className="size-2.5 text-brand" />
+                              </span>
+                              {feature}
+                            </li>
+                          ))}
+                        </ul>
+                        <button
+                          type="button"
+                          onClick={openQuoteModal}
+                          className="group mt-6 inline-flex min-h-11 items-center justify-between gap-3 rounded-full border border-white/14 bg-white/[0.04] px-5 py-2.5 text-sm font-medium text-white transition hover:border-brand/40 hover:bg-white/[0.08]"
+                        >
+                          <span>Solicitar orçamento</span>
+                          <ArrowUpRight className="size-4 text-brand transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                        </button>
                       </div>
-
-                      <p className="mt-6 min-h-[56px] text-sm leading-7 text-white/68">
-                        {offer.description}
-                      </p>
-
-                      <ul className="mt-6 grid gap-2.5">
-                        {offer.features.map((feature) => (
-                          <li
-                            key={feature}
-                            className="flex min-h-12 items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.025] px-4 py-3 text-xs text-white/78 sm:text-sm"
-                          >
-                            <span className="flex size-5 shrink-0 items-center justify-center rounded-full border border-brand/25 bg-brand-soft">
-                              <Check className="size-3 text-brand" />
-                            </span>
-                            {feature}
-                          </li>
-                        ))}
-                      </ul>
-
-                      <a
-                        href={whatsappLink}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="group mt-auto inline-flex min-h-12 items-center justify-between gap-3 rounded-full border border-white/14 bg-white/[0.04] px-5 py-3 text-sm font-medium text-white transition hover:border-brand/40 hover:bg-white/[0.08]"
-                      >
-                        <span>{landingContent.contact.whatsappLabel}</span>
-                        <ArrowUpRight className="size-4 text-brand transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                      </a>
-                    </div>
-                  </LiquidGlassV2>
-                </div>
-              ))}
+                    </LiquidGlassV2>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
 
-        <section
-          id={sectionIds.support}
-          className="section-band"
-        >
+        {/* ── Parceria ── */}
+        <section id={sectionIds.partnership} className="section-band">
           <div className="shell">
             <div data-reveal className="max-w-3xl">
               <span className="section-kicker">
                 <Clock3 className="size-3.5 text-brand" />
-                Suporte mensal
+                Parceria contínua
               </span>
               <h2 className="section-title mt-6">
-                Continue evoluindo sem perder padrão.
+                Não entregamos e sumimos — somos parceiros de longo prazo.
               </h2>
               <p className="section-copy mt-5">
-                Planos recorrentes para manter sua página afiada, sem retrabalho.
+                Mantemos, otimizamos e evoluímos o que entregamos. Sua presença
+                digital cresce junto com o negócio.
               </p>
             </div>
 
-            <div data-reveal className="mt-12">
-              <LiquidGlassV2
-                variant="sidebar"
-                borderRadius="2rem"
-                enableHover={false}
-                className="!cursor-default"
-              >
-                <div className="w-full p-5 sm:p-7">
-                  {[...landingContent.supportPlans, landingContent.addonEmail].map(
-                    (plan, index) => (
-                      <div
-                        key={plan.title}
-                        className="grid gap-5 border-b border-white/10 py-6 first:pt-0 last:border-b-0 last:pb-0 lg:grid-cols-[0.8fr_0.52fr_1fr] lg:items-center"
-                      >
-                        <div>
-                          <p className="font-mono text-[10px] uppercase tracking-[0.16em] text-white/42">
-                            {index < 2 ? "Plano recorrente" : "Complemento"}
-                          </p>
-                          <h3 className="mt-3 text-xl font-medium leading-tight tracking-normal text-white">
-                            {plan.title}
-                          </h3>
-                        </div>
-                        <div className="lg:text-center">
-                          <p className="text-2xl font-medium leading-none text-brand">
-                            {plan.price}
-                          </p>
-                          <p className="mt-2 font-mono text-[10px] uppercase leading-5 tracking-[0.12em] text-white/46">
-                            {plan.afterPrice}
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-sm leading-7 text-white/68">
-                            {plan.description}
-                          </p>
-                          {Array.isArray(
-                            (plan as { features?: string[] }).features,
-                          ) ? (
-                            <div className="mt-4 flex flex-wrap gap-2">
-                              {(
-                                plan as unknown as { features: string[] }
-                              ).features.map((feature) => (
-                                  <span
-                                    key={feature}
-                                    className="inline-flex items-center gap-2 rounded-full bg-white/[0.035] px-3 py-1.5 text-[11px] text-white/72"
-                                  >
-                                    <Check className="size-3 text-brand" />
-                                    {feature}
-                                  </span>
-                                ))}
-                            </div>
-                          ) : null}
-                        </div>
+            <div
+              data-reveal
+              className="mt-12 grid gap-5 sm:grid-cols-2"
+            >
+              {landingContent.partnershipPillars.map((pillar) => {
+                const Icon =
+                  partnershipIconMap[pillar.iconKey] ?? Sparkles;
+                return (
+                  <LiquidGlassV2
+                    key={pillar.title}
+                    variant="sidebar"
+                    borderRadius="1.8rem"
+                    enableHover={false}
+                    className="!cursor-default"
+                  >
+                    <div className="w-full p-6 sm:p-7">
+                      <div className="inline-flex w-fit rounded-xl border border-brand/22 bg-brand-soft p-2.5">
+                        <Icon className="size-4 text-brand" />
                       </div>
-                    ),
-                  )}
-                </div>
-              </LiquidGlassV2>
+                      <h3 className="mt-5 text-xl font-medium leading-tight tracking-normal text-white">
+                        {pillar.title}
+                      </h3>
+                      <p className="mt-3 text-sm leading-7 text-white/68">
+                        {pillar.description}
+                      </p>
+                      <div className="mt-5 flex flex-wrap gap-2">
+                        {pillar.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-3 py-1.5 text-[11px] text-white/64"
+                          >
+                            <Check className="size-3 text-brand" />
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </LiquidGlassV2>
+                );
+              })}
             </div>
           </div>
         </section>
 
-        <section
-          id={sectionIds.process}
-          className="section-band-muted"
-        >
+        {/* ── Processo ── */}
+        <section id={sectionIds.process} className="section-band-muted">
           <div className="shell grid min-w-0 gap-14 lg:grid-cols-[0.85fr_1.15fr]">
             <div data-reveal className="min-w-0">
               <span className="section-kicker">
@@ -747,8 +768,8 @@ export default function LandingPage() {
                 Processo rápido, direto e sem fricção.
               </h2>
               <p className="section-copy mt-5">
-                Tiramos o projeto do papel com clareza, ritmo e padrão premium do
-                briefing à publicação.
+                Tiramos o projeto do papel com clareza, ritmo e padrão premium
+                do briefing à publicação.
               </p>
             </div>
 
@@ -787,6 +808,7 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* ── Timeline ── */}
         <section className="section-band" data-horizontal-section>
           <div className="shell">
             <div data-reveal className="max-w-3xl">
@@ -808,12 +830,10 @@ export default function LandingPage() {
                 data-horizontal-track
                 className="relative flex min-w-max snap-x snap-mandatory gap-8 pr-8 will-change-transform lg:gap-80 lg:snap-none"
               >
-                {/* linha base sempre visível */}
                 <div
                   aria-hidden="true"
                   className="absolute left-0 right-0 top-[130px] z-[0] h-px bg-white/10"
                 />
-                {/* progress bar com glow driven pelo scroll */}
                 <div
                   aria-hidden="true"
                   data-timeline-progress
@@ -826,7 +846,7 @@ export default function LandingPage() {
                     transform: "scaleX(0)",
                   }}
                 />
-                {landingContent.companyTimeline.map((item, index) => (
+                {landingContent.companyTimeline.map((item) => (
                   <article
                     key={item.year}
                     data-timeline-card
@@ -850,6 +870,7 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* ── Credibilidade ── */}
         <section className="section-band-muted">
           <div className="shell">
             <div data-reveal className="max-w-3xl">
@@ -889,6 +910,7 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* ── Portfólio ── */}
         <section className="section-band-muted">
           <div className="shell">
             <div data-reveal className="section-heading-row min-w-0">
@@ -897,22 +919,24 @@ export default function LandingPage() {
                   <Layers3 className="size-3.5 text-brand" />
                   Portfólio
                 </span>
-                <h2 className="section-title mt-6">
-                  Trabalhos que falam por si.
-                </h2>
+                <h2 className="section-title mt-6">Trabalhos que falam por si.</h2>
               </div>
               <p className="max-w-md font-mono text-xs leading-6 text-white/56">
-                Sistemas e presença digital entregues com padrão premium para empresas reais.
+                Sistemas e presença digital entregues com padrão premium para
+                empresas reais.
               </p>
             </div>
 
-            <div data-reveal className="relative mt-8 hidden overflow-hidden rounded-[2rem] lg:block">
+            {/* Desktop portfolio */}
+            <div
+              data-reveal
+              className="relative mt-8 hidden overflow-hidden rounded-[2rem] lg:block"
+            >
               <BendSliderComponent
                 images={portfolioProjects[activeProject].images}
                 className="h-[80vh] min-h-[420px] w-full"
               />
 
-              {/* seletores sobrepostos no topo do canvas */}
               <div className="pointer-events-none absolute inset-x-0 top-0 z-10 bg-gradient-to-b from-black/80 via-black/30 to-transparent pb-24 pt-5">
                 <div
                   className="pointer-events-auto flex gap-2 overflow-x-auto px-5"
@@ -923,7 +947,8 @@ export default function LandingPage() {
                       key={project.slug}
                       onClick={() => setActiveProject(index)}
                       className={`group shrink-0 flex flex-col items-center gap-2 rounded-2xl border px-5 pb-3 backdrop-blur-sm transition ${
-                        project.slug === "banco-bhg" || project.slug === "solumart-servicos"
+                        project.slug === "banco-bhg" ||
+                        project.slug === "solumart-servicos"
                           ? "pt-2"
                           : "pt-4"
                       } ${
@@ -936,7 +961,8 @@ export default function LandingPage() {
                         src={project.logo}
                         alt=""
                         className={`w-auto object-contain transition ${
-                          project.slug === "banco-bhg" || project.slug === "solumart-servicos"
+                          project.slug === "banco-bhg" ||
+                          project.slug === "solumart-servicos"
                             ? "h-7 max-w-[96px]"
                             : "h-5 max-w-[80px]"
                         } ${activeProject === index ? "opacity-100" : "opacity-50 group-hover:opacity-70"}`}
@@ -949,7 +975,6 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* info do projeto sobreposta no rodapé do canvas */}
               <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/92 via-black/55 to-transparent px-5 pb-6 pt-28">
                 <div className="pointer-events-auto flex flex-col gap-4 lg:flex-row lg:items-end lg:gap-8">
                   <div className="flex shrink-0 items-center gap-3">
@@ -1002,7 +1027,6 @@ export default function LandingPage() {
 
             {/* Mobile portfolio */}
             <div data-reveal className="mt-6 lg:hidden">
-              {/* Project selector pills */}
               <div
                 className="flex gap-2 overflow-x-auto pb-1"
                 style={{ scrollbarWidth: "none" }}
@@ -1032,7 +1056,6 @@ export default function LandingPage() {
                 ))}
               </div>
 
-              {/* Image viewer */}
               <div
                 className="relative mt-4 aspect-[16/10] overflow-hidden rounded-xl bg-[#080808]"
                 onTouchStart={(e) => {
@@ -1041,8 +1064,7 @@ export default function LandingPage() {
                 onTouchEnd={(e) => {
                   const delta =
                     touchStartX.current - e.changedTouches[0].clientX;
-                  const total =
-                    portfolioProjects[activeProject].images.length;
+                  const total = portfolioProjects[activeProject].images.length;
                   if (delta > 50 && mobileImageIndex < total - 1)
                     setMobileImageIndex((i) => i + 1);
                   else if (delta < -50 && mobileImageIndex > 0)
@@ -1050,9 +1072,7 @@ export default function LandingPage() {
                 }}
               >
                 <img
-                  src={
-                    portfolioProjects[activeProject].images[mobileImageIndex]
-                  }
+                  src={portfolioProjects[activeProject].images[mobileImageIndex]}
                   alt=""
                   className="h-full w-full object-contain"
                 />
@@ -1085,13 +1105,11 @@ export default function LandingPage() {
                 )}
               </div>
 
-              {/* Counter */}
               <p className="mt-2 text-center font-mono text-[11px] text-white/36">
                 {mobileImageIndex + 1} /{" "}
                 {portfolioProjects[activeProject].images.length}
               </p>
 
-              {/* Project info card */}
               <div className="mt-5 rounded-2xl border border-white/8 bg-white/[0.03] p-5">
                 <div className="flex items-center gap-3">
                   <div className="flex h-9 min-w-[56px] items-center justify-center rounded-lg border border-white/10 bg-white/[0.05] px-3">
@@ -1138,6 +1156,7 @@ export default function LandingPage() {
           </div>
         </section>
 
+        {/* ── FAQ ── */}
         <section id={sectionIds.faq} className="section-band">
           <div className="shell grid min-w-0 gap-12 lg:grid-cols-[0.8fr_1.2fr]">
             <div data-reveal className="min-w-0">
@@ -1149,23 +1168,23 @@ export default function LandingPage() {
                 Respostas rápidas para destravar a decisão.
               </h2>
               <p className="section-copy mt-5">
-                Ainda restou dúvida? Manda no WhatsApp — a gente responde sem
-                roteiro.
+                Ainda restou dúvida? Solicite um orçamento e tire todas as
+                dúvidas com nosso time.
               </p>
-              <a
-                href={whatsappLink}
-                target="_blank"
-                rel="noreferrer"
+              <button
+                type="button"
+                onClick={openQuoteModal}
                 className="mt-7 inline-flex items-center gap-3 rounded-full border border-brand/30 bg-brand-soft px-5 py-3 text-sm font-medium text-brand transition hover:bg-brand-soft/70"
               >
-                <MessageCircleMore className="size-4" />
-                Falar com a gente
-              </a>
+                <ArrowRight className="size-4" />
+                Solicitar orçamento
+              </button>
             </div>
             <FaqAccordion items={landingContent.faq} />
           </div>
         </section>
 
+        {/* ── CTA Final ── */}
         <section className="relative py-24 sm:py-32">
           <div className="shell relative z-10">
             <div data-reveal>
@@ -1189,24 +1208,23 @@ export default function LandingPage() {
                   </p>
 
                   <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-                    <a
+                    <button
                       ref={finalCtaRef}
-                      href={whatsappLink}
-                      target="_blank"
-                      rel="noreferrer"
+                      type="button"
+                      onClick={openQuoteModal}
                       className="group relative inline-flex min-h-12 items-center justify-center gap-3 overflow-hidden rounded-full bg-brand px-7 py-3 text-sm font-medium text-brand-foreground transition hover:translate-y-[-1px] hover:bg-[#58ff39]"
                     >
                       <span className="relative z-10">
-                        {landingContent.contact.whatsappLabel}
+                        Solicitar um orçamento personalizado
                       </span>
-                      <MessageCircleMore className="relative z-10 size-5" />
+                      <ArrowRight className="relative z-10 size-5 transition-transform group-hover:translate-x-0.5" />
                       <span
                         aria-hidden="true"
                         className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-white/20 opacity-0 transition-all duration-700 group-hover:left-[120%] group-hover:opacity-100"
                       />
-                    </a>
+                    </button>
                     <div className="inline-flex min-h-12 items-center rounded-full border border-white/14 bg-white/[0.04] px-6 py-3 font-mono text-[11px] uppercase tracking-[0.14em] text-white/62">
-                      {landingContent.contact.whatsappNumber}
+                      Proposta em até 24h
                     </div>
                   </div>
                 </div>
@@ -1215,16 +1233,14 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* Lightbox */}
+        {/* ── Lightbox ── */}
         {lightboxOpen && (
           <div
             className="fixed inset-0 z-[200] flex items-center justify-center bg-black/96"
             onClick={() => setLightboxOpen(false)}
           >
             <img
-              src={
-                portfolioProjects[activeProject].images[lightboxIndex]
-              }
+              src={portfolioProjects[activeProject].images[lightboxIndex]}
               alt=""
               className="max-h-[92vh] max-w-[96vw] object-contain"
               onClick={(e) => e.stopPropagation()}
@@ -1266,6 +1282,7 @@ export default function LandingPage() {
           </div>
         )}
 
+        {/* ── Footer ── */}
         <footer className="relative border-t border-white/8 py-10">
           <div className="shell flex flex-col items-center justify-between gap-4 sm:flex-row">
             <BrandLockup compact />
