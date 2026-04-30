@@ -26,26 +26,34 @@ export interface TimelineEntry {
   description: string;
 }
 
-export interface ProofPlaceholder {
-  title: string;
-  description: string;
+export interface ProofCard {
+  tag: string;
+  body: string;
 }
 
 export interface LandingPageContent {
   hero: {
     headline: string;
-    abVariants: string[];
     subheadline: string;
     primaryCta: string;
     secondaryCta: string;
     trustBadges: string[];
-    quickPoints: string[];
   };
+  painPointsTitle: string;
   painPoints: string[];
+  solutionBridge: {
+    title: string;
+    body: string;
+  };
   solutions: {
     title: string;
     description: string;
   }[];
+  credibilitySection: {
+    title: string;
+    subtitle: string;
+  };
+  proofCards: ProofCard[];
   offers: LandingOffer[];
   supportPlans: SupportPlan[];
   addonEmail: {
@@ -59,8 +67,13 @@ export interface LandingPageContent {
     description: string;
   }[];
   companyTimeline: TimelineEntry[];
-  proofPlaceholders: ProofPlaceholder[];
   faq: FaqItem[];
+  ctaFinal: {
+    title: string;
+    body: string;
+    cta: string;
+    ps: string;
+  };
   contact: {
     whatsappNumber: string;
     whatsappLabel: string;
@@ -70,51 +83,71 @@ export interface LandingPageContent {
 
 export const landingContent: LandingPageContent = {
   hero: {
-    headline: "Seu site institucional em 72h",
-    abVariants: [
-      "Seu site premium pronto em até 72 horas.",
-      "Uma presença digital elegante para vender melhor.",
-    ],
+    headline: "Chega de pagar caro por páginas que não convertem. A gente entrega em até 72h.",
     subheadline:
-      "Criamos sites, landing pages e apps com visual premium, segurança e publicação rápida.",
+      "Sites e landing pages com visual de alto padrão, hospedagem e domínio grátis, entregues em até 72 horas. 8 anos de mercado. Mais de 200 projetos entregues.",
     primaryCta: "Solicitar orçamento no WhatsApp",
     secondaryCta: "Ver planos e ofertas",
     trustBadges: [
+      "Entrega em até 72h",
       "Hospedagem e domínio grátis",
       "100% responsivo",
-      "Seguro",
       "SEO completo",
     ],
-    quickPoints: ["Entrega rápida", "Visual premium", "Teste A/B opcional"],
   },
+  painPointsTitle: "Reconhece alguma dessas situações?",
   painPoints: [
-    "Sua empresa entrega bem, mas ainda não parece premium no digital.",
-    "Seu site atual não converte, não posiciona e passa pouca confiança.",
-    "Tudo está espalhado: comunicação, estrutura e percepção de valor.",
-    "Falta uma página bonita, clara e pronta para vender.",
+    "Você paga o gestor todo mês e as páginas continuam feias, lentas e sem converter.",
+    "Precisa lançar um produto novo, mas não tem uma landing page pronta para isso.",
+    "Seu site atual parece de 2015. Os clientes chegam, olham e vão embora.",
+    "Você pediu, ele prometeu, atrasou. Quando entregou, não era o que você queria.",
   ],
+  solutionBridge: {
+    title: "Existe uma saída mais simples do que você imagina.",
+    body: "Você não precisa de mais um gestor caro que vai sumir no meio do projeto. Precisa de um studio que já fez isso mais de 200 vezes, que sabe o que converte, e que coloca tudo no ar em até 72 horas com hospedagem e domínio inclusos. Sem surpresa no prazo. Sem surpresa no preço.",
+  },
   solutions: [
     {
-      title: "Sites institucionais que elevam percepção",
+      title: "Site institucional que passa credibilidade de verdade",
       description:
-        "Estrutura elegante para transmitir autoridade no primeiro scroll.",
+        "Sua empresa finalmente vai parecer tão boa quanto é. Visual premium, SEO completo e responsivo em qualquer tela.",
     },
     {
-      title: "Landing pages para captação e venda",
-      description: "Páginas focadas em clique, contato e resultado.",
+      title: "Landing page pronta para converter",
+      description:
+        "Página focada em uma coisa só: transformar visitante em contato ou venda. Ideal para lançamentos e tráfego pago.",
     },
     {
-      title: "Apps e presença digital sob medida",
-      description: "Soluções personalizadas para evoluir sua operação digital.",
+      title: "Além do site: soluções que fazem sua operação crescer",
+      description:
+        "Para quando você precisa de mais do que uma página: apps, automações e sistemas feitos para o seu negócio.",
+    },
+  ],
+  credibilitySection: {
+    title: "Resultados reais de quem já passou por aqui.",
+    subtitle: "8 anos de mercado. Mais de 200 projetos entregues. Estes são alguns dos resultados.",
+  },
+  proofCards: [
+    {
+      tag: "Landing page",
+      body: "Um dos nossos clientes aumentou em 15% a taxa de conversão após trocar a landing page antiga pela nossa.",
+    },
+    {
+      tag: "Site institucional",
+      body: "Com páginas mais atrativas, outro cliente conseguiu vender serviços de ticket maior, aumentando a margem em 10%.",
+    },
+    {
+      tag: "BlackElephant",
+      body: "+200 projetos entregues em 8 anos. Sites, apps, landing pages e sistemas para empresas que precisavam de mais do que um gestor.",
     },
   ],
   offers: [
     {
       title: "Comprar o site",
       price: "R$ 1.198,00",
-      subtitle: "Institucional sob medida",
+      subtitle: "Para quem precisa aparecer bem e passar confiança desde o primeiro clique.",
       description:
-        "Para quem precisa de uma presença digital forte e elegante.",
+        "Seu site no ar em até 72h com visual premium, hospedagem e domínio grátis. Feito para durar e para converter.",
       features: [
         "Design premium responsivo",
         "SEO completo",
@@ -125,21 +158,23 @@ export const landingContent: LandingPageContent = {
     {
       title: "Comprar o site com teste A/B",
       price: "R$ 1.998,00",
-      subtitle: "Versão orientada à otimização",
-      description: "Inclui variações estratégicas para otimizar a conversão.",
+      subtitle: "Para quem quer resultado, não achismo.",
+      description:
+        "Tudo do site institucional, mais variações estratégicas para descobrir o que realmente converte no seu negócio.",
       features: [
         "Tudo do site institucional",
         "Setup de experimento A/B",
         "Base para decisões com dados",
         "Melhoria contínua de conversão",
       ],
-      highlight: "Mais estratégico",
+      highlight: "Recomendado",
     },
     {
       title: "Comprar a landing page",
       price: "R$ 798,00",
-      subtitle: "LP focada em geração de demanda",
-      description: "Ideal para campanhas, ofertas e captação de leads.",
+      subtitle: "Para lançamentos, campanhas e captação de leads.",
+      description:
+        "Uma página com foco total em conversão. CTA claro, narrativa comercial e visual pronto para tráfego pago.",
       features: [
         "Página única de alta conversão",
         "CTA e narrativa comercial",
@@ -150,15 +185,16 @@ export const landingContent: LandingPageContent = {
     {
       title: "Comprar a landing page com teste A/B",
       price: "R$ 1.298,00",
-      subtitle: "LP + otimização de performance",
-      description: "Para quem quer testar criativos e vender com mais precisão.",
+      subtitle: "Para quem roda tráfego e quer dados, não suposições.",
+      description:
+        "Tudo da landing page, mais variações para testar headline, CTA e abordagem. A base para escalar com segurança.",
       features: [
         "Tudo da landing page",
         "Variações estratégicas para teste",
         "Mais clareza sobre performance",
         "Base para escalar campanhas",
       ],
-      highlight: "Ideal para tráfego",
+      highlight: "Recomendado",
     },
   ],
   supportPlans: [
@@ -195,15 +231,17 @@ export const landingContent: LandingPageContent = {
     {
       title: "1. Briefing rápido e objetivo",
       description:
-        "Entendemos sua oferta e a imagem que a marca precisa passar.",
+        "Em uma conversa curta no WhatsApp entendemos sua oferta, sua marca e o que a página precisa comunicar. Sem formulário longo, sem reunião de 2 horas.",
     },
     {
       title: "2. Design, copy e implementação",
-      description: "Montamos a página com visual forte e comunicação clara.",
+      description:
+        "Montamos a página com visual forte, textos que vendem e código limpo. Você acompanha e aprova antes de ir ao ar.",
     },
     {
       title: "3. Publicação e ativação",
-      description: "Colocamos tudo no ar com domínio, hospedagem e base pronta.",
+      description:
+        "Subimos tudo: domínio, hospedagem, SSL e SEO de base. Em até 72h a partir do briefing, sua página está no ar e pronta para receber visitas.",
     },
   ],
   companyTimeline: [
@@ -228,49 +266,44 @@ export const landingContent: LandingPageContent = {
       description: "Expandimos para sites, apps, automações e presença digital.",
     },
   ],
-  proofPlaceholders: [
-    {
-      title: "Case em destaque",
-      description: "Espaço para um projeto com antes e depois.",
-    },
-    {
-      title: "Depoimento de cliente",
-      description: "Espaço para uma fala real com nome e cargo.",
-    },
-    {
-      title: "Prova de autoridade",
-      description: "Área para logos, métricas ou validações futuras.",
-    },
-  ],
   faq: [
     {
-      question: "A entrega em até 72 horas vale para qualquer projeto?",
+      question: "A entrega em 72 horas é garantida?",
       answer:
-        "Vale para o escopo desta oferta. Projetos maiores podem exigir ajuste.",
+        "Para os projetos dentro do escopo desta oferta, sim. Assim que o briefing é aprovado, o cronômetro começa. Você recebe a página pronta para revisar em até 72 horas. Se precisar de ajuste, fazemos sem burocracia.",
     },
     {
-      question: "Hospedagem e domínio realmente já estão inclusos?",
-      answer: "Sim. A proposta já inclui hospedagem e domínio grátis.",
-    },
-    {
-      question: "O site fica preparado para celular e Google?",
-      answer: "Sim. O projeto sai responsivo, seguro e com SEO de base.",
-    },
-    {
-      question: "Quando vale a pena escolher a versão com teste A/B?",
+      question: "Hospedagem e domínio realmente estão inclusos? Por quanto tempo?",
       answer:
-        "Quando você quer validar headline, CTA ou abordagem com mais precisão.",
+        "Sim, inclusos no projeto. Sem custo adicional no primeiro ano. Depois, os planos de suporte mensal cobrem a continuidade.",
+    },
+    {
+      question: "Vale a pena pagar a mais pelo teste A/B?",
+      answer:
+        "Se você vai rodar tráfego pago ou tem mais de uma hipótese de comunicação, sim. O A/B elimina o achismo e mostra com dados o que realmente converte. Um de nossos clientes aumentou 15% na conversão com esse recurso.",
+    },
+    {
+      question: "O que acontece se eu não gostar do resultado?",
+      answer:
+        "A gente ajusta até ficar certo. Você aprova o design antes de ir ao ar. Não subimos nada sem sua confirmação.",
+    },
+    {
+      question: "Vocês só fazem sites ou também criam a estratégia?",
+      answer:
+        "Criamos a estrutura visual e a narrativa comercial da página. Se você precisar de tráfego pago ou gestão de campanhas, indicamos parceiros de confiança.",
     },
     {
       question: "Como funciona o suporte mensal?",
-      answer: "Cada plano cobre até 4 atualizações mensais.",
-    },
-    {
-      question: "Vocês também cuidam do ambiente de e-mail da empresa?",
       answer:
-        "Sim. Estruturamos Google Workspace ou Microsoft 365 com segurança.",
+        "Cada plano cobre até 4 atualizações mensais: ajustes de texto, visual, botões, imagens. Você aciona pelo WhatsApp e a gente resolve. Sem ticket, sem espera de semanas.",
     },
   ],
+  ctaFinal: {
+    title: "Sua página pode estar no ar essa semana.",
+    body: "Cada dia com uma página ruim é um dia perdendo cliente para o concorrente. Chama a gente no WhatsApp agora e em até 72 horas seu site ou landing page está pronto.",
+    cta: "Quero minha página agora",
+    ps: "P.S.: Hospedagem e domínio grátis no primeiro ano. Sem surpresa no prazo. Sem surpresa no preço.",
+  },
   contact: {
     whatsappNumber: "+55 19 97805-5531",
     whatsappLabel: "Falar agora no WhatsApp",
