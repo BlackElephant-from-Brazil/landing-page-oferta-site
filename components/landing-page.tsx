@@ -19,12 +19,8 @@ import {
   Maximize2,
   MessageCircleMore,
   RefreshCw,
-  Settings2,
   ShieldCheck,
-  ShoppingBag,
-  Smartphone,
   Sparkles,
-  Workflow,
   X,
   Zap,
 } from "lucide-react";
@@ -46,10 +42,6 @@ const trustIcons = [Globe, BadgeCheck, Lock, ShieldCheck];
 const serviceIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
   Globe,
   Layers3,
-  Smartphone,
-  Settings2,
-  Workflow,
-  ShoppingBag,
 };
 
 const partnershipIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
@@ -59,16 +51,7 @@ const partnershipIconMap: Record<string, React.ComponentType<{ className?: strin
   MessageCircleMore,
 };
 
-const heroServiceTypes = [
-  "App",
-  "Sistema",
-  "Landing Page",
-  "Site",
-  "Robô de WhatsApp",
-  "E-commerce",
-  "Blog",
-  "Outro",
-];
+const heroServiceTypes = ["Landing Page", "Site"];
 
 const sectionIds = {
   shift: "diferencial",
@@ -445,11 +428,11 @@ export default function LandingPage() {
                     <p className="font-mono text-[11px] uppercase tracking-[0.16em] text-white/50">
                       O que você precisa?
                     </p>
-                    <div className="mt-4 grid grid-cols-2 gap-2">
+                    <div className="mt-4 flex gap-3">
                       {heroServiceTypes.map((type) => (
                         <span
                           key={type}
-                          className="inline-flex min-h-[40px] items-center rounded-xl border border-white/10 bg-white/[0.04] px-3 py-2 text-[11px] text-white/56"
+                          className="flex-1 inline-flex min-h-[52px] items-center justify-center rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm font-medium text-white/70"
                         >
                           {type}
                         </span>
@@ -584,10 +567,8 @@ export default function LandingPage() {
                       <div className="rounded-full bg-white/[0.035] p-2.5 text-brand">
                         {index === 0 ? (
                           <LineChart className="size-4" />
-                        ) : index === 1 ? (
-                          <Layers3 className="size-4" />
                         ) : (
-                          <Sparkles className="size-4" />
+                          <Layers3 className="size-4" />
                         )}
                       </div>
                     </div>
@@ -614,16 +595,16 @@ export default function LandingPage() {
                   Serviços
                 </span>
                 <h2 className="section-title mt-6">
-                  Tecnologia sob medida para cada etapa do seu negócio.
+                  Dois produtos. Uma missão: colocar sua marca no ar com autoridade.
                 </h2>
               </div>
               <p className="max-w-md font-mono text-xs leading-6 text-white/56">
-                Do site institucional ao sistema personalizado — entregamos com
-                código próprio, visual premium e publicação assistida.
+                Sites e landing pages com código próprio, visual premium e
+                publicação em até 72 horas.
               </p>
             </div>
 
-            <div className="mt-12 grid items-start gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-12 grid items-start gap-8 sm:grid-cols-2">
               {landingContent.services.map((service) => {
                 const Icon =
                   serviceIconMap[service.iconKey] ?? Sparkles;

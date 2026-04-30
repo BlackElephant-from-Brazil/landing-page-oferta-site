@@ -59,7 +59,7 @@ export const landingContent: LandingPageContent = {
   hero: {
     headline: "Seu site institucional em 72h",
     subheadline:
-      "Criamos sites, landing pages e apps com visual premium, segurança e publicação rápida.",
+      "Criamos sites e landing pages com visual premium, segurança e publicação em até 72 horas.",
     primaryCta: "Solicitar um orçamento personalizado",
     secondaryCta: "Conhecer nossos serviços",
     trustBadges: [
@@ -86,10 +86,6 @@ export const landingContent: LandingPageContent = {
       title: "Landing pages para captação e venda",
       description: "Páginas focadas em clique, contato e resultado.",
     },
-    {
-      title: "Apps e presença digital sob medida",
-      description: "Soluções personalizadas para evoluir sua operação digital.",
-    },
   ],
   services: [
     {
@@ -97,12 +93,13 @@ export const landingContent: LandingPageContent = {
       title: "Site Institucional",
       subtitle: "Autoridade digital para sua marca",
       description:
-        "Para empresas que precisam transmitir credibilidade e fechar negócios pelo digital.",
+        "Para empresas que precisam transmitir credibilidade e fechar negócios pelo digital. Entregamos em até 72 horas.",
       features: [
         "Design premium responsivo",
         "SEO completo",
         "Hospedagem e domínio grátis",
         "Publicação em até 72 horas",
+        "Copy e estrutura comercial",
       ],
     },
     {
@@ -110,66 +107,15 @@ export const landingContent: LandingPageContent = {
       title: "Landing Page",
       subtitle: "Conversão focada em resultado",
       description:
-        "Páginas de alta performance para campanhas, ofertas e captação de leads qualificados.",
+        "Página única de alta performance para campanhas, ofertas e captação de leads qualificados. Pronta em até 72 horas.",
       features: [
         "Narrativa comercial estratégica",
         "Otimizada para tráfego pago",
         "CTA e formulário de captação",
-        "Entrega rápida",
+        "SEO e carregamento rápido",
+        "Teste A/B opcional",
       ],
       badge: "Mais pedido",
-    },
-    {
-      iconKey: "Smartphone",
-      title: "Aplicativo",
-      subtitle: "Experiência digital sob medida",
-      description:
-        "Apps web e mobile com UX personalizada para o fluxo real do seu negócio.",
-      features: [
-        "Design de experiência (UX/UI)",
-        "Web app ou mobile nativo",
-        "Backend e integração de APIs",
-        "Publicação assistida",
-      ],
-    },
-    {
-      iconKey: "Settings2",
-      title: "Sistema Personalizado",
-      subtitle: "Software que serve ao seu processo",
-      description:
-        "ERPs, CRMs e painéis de gestão construídos para a operação real da sua empresa.",
-      features: [
-        "Levantamento de requisitos",
-        "Interface administrativa completa",
-        "Integrações com APIs externas",
-        "Treinamento e documentação",
-      ],
-    },
-    {
-      iconKey: "Workflow",
-      title: "Automação",
-      subtitle: "Menos operação, mais resultado",
-      description:
-        "Robôs de WhatsApp, integrações entre sistemas e fluxos automáticos que escalam o negócio.",
-      features: [
-        "Robô de WhatsApp (n8n, ManyChat)",
-        "Integração via Make ou Zapier",
-        "Funil e CRM automatizado",
-        "Relatórios em tempo real",
-      ],
-    },
-    {
-      iconKey: "ShoppingBag",
-      title: "E-commerce",
-      subtitle: "Loja online que vende de verdade",
-      description:
-        "Estrutura completa de vendas online com catálogo, checkout e gestão de pedidos.",
-      features: [
-        "Catálogo com variações de produto",
-        "Checkout otimizado",
-        "Integração com gateways de pagamento",
-        "Painel de gestão de pedidos",
-      ],
     },
   ],
   partnershipPillars: [
@@ -257,7 +203,7 @@ export const landingContent: LandingPageContent = {
     {
       question: "A entrega em até 72 horas vale para qualquer projeto?",
       answer:
-        "Vale para sites institucionais e landing pages dentro do escopo padrão. Projetos maiores (apps, sistemas, automações) têm prazo definido no orçamento personalizado.",
+        "Vale para sites institucionais e landing pages dentro do escopo padrão. Projetos com escopo ampliado têm prazo ajustado e definido no orçamento personalizado.",
     },
     {
       question: "Hospedagem e domínio realmente já estão inclusos?",

@@ -4,16 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ArrowRight, Check, Loader2 } from "lucide-react";
 
-const PROJECT_TYPES = [
-  "App",
-  "Sistema",
-  "Landing Page",
-  "Site",
-  "Robô de WhatsApp",
-  "E-commerce",
-  "Blog",
-  "Outro",
-] as const;
+const PROJECT_TYPES = ["Landing Page", "Site"] as const;
 
 type ProjectType = (typeof PROJECT_TYPES)[number];
 
@@ -22,7 +13,7 @@ type FormState = {
   site: string;
   email: string;
   whatsapp: string;
-  projectTypes: ProjectType[];
+  projectType: ProjectType | "";
   summary: string;
 };
 
@@ -48,7 +39,7 @@ export default function QuoteModal({ open, onClose }: QuoteModalProps) {
     site: "",
     email: "",
     whatsapp: "",
-    projectTypes: [],
+    projectType: "",
     summary: "",
   });
   const [errors, setErrors] = useState<
@@ -104,7 +95,7 @@ export default function QuoteModal({ open, onClose }: QuoteModalProps) {
           site: "",
           email: "",
           whatsapp: "",
-          projectTypes: [],
+          projectType: "",
           summary: "",
         });
         setErrors({});
@@ -114,14 +105,12 @@ export default function QuoteModal({ open, onClose }: QuoteModalProps) {
     }
   }, [open]);
 
-  const toggleProjectType = (type: ProjectType) => {
+  const selectProjectType = (type: ProjectType) => {
     setForm((f) => ({
       ...f,
-      projectTypes: f.projectTypes.includes(type)
-        ? f.projectTypes.filter((t) => t !== type)
-        : [...f.projectTypes, type],
+      projectType: f.projectType === type ? "" : type,
     }));
-    setErrors((e) => ({ ...e, projectTypes: undefined }));
+    setErrors((e) => ({ ...e, projectType: undefined }));
   };
 
   const validateField = (
@@ -139,10 +128,8 @@ export default function QuoteModal({ open, onClose }: QuoteModalProps) {
         return String(value).replace(/\D/g, "").length < 10
           ? "Informe um WhatsApp válido com DDD"
           : undefined;
-      case "projectTypes":
-        return (value as ProjectType[]).length === 0
-          ? "Selecione ao menos um tipo de projeto"
-          : undefined;
+      case "projectType":
+        return !String(value) ? "Selecione o tipo de projeto" : undefined;
       case "summary":
         return String(value).trim().length < SUMMARY_MIN
           ? `Descreva um pouco mais (mín. ${SUMMARY_MIN} caracteres)`
@@ -162,7 +149,7 @@ export default function QuoteModal({ open, onClose }: QuoteModalProps) {
       "name",
       "email",
       "whatsapp",
-      "projectTypes",
+      "projectType",
       "summary",
     ];
     const newErrors: Partial<Record<keyof FormState, string>> = {};
@@ -202,7 +189,7 @@ export default function QuoteModal({ open, onClose }: QuoteModalProps) {
     !form.name.trim() ||
     !form.email.trim() ||
     form.whatsapp.replace(/\D/g, "").length < 10 ||
-    form.projectTypes.length === 0 ||
+    !form.projectType ||
     form.summary.trim().length < SUMMARY_MIN;
 
   const inputBase =
@@ -442,21 +429,22 @@ export default function QuoteModal({ open, onClose }: QuoteModalProps) {
                       </span>
                     </p>
                     <div
-                      role="group"
+                      role="radiogroup"
                       aria-label="Selecione o tipo de projeto"
-                      className="grid grid-cols-2 gap-2 sm:grid-cols-4"
+                      className="grid grid-cols-2 gap-3"
                     >
                       {PROJECT_TYPES.map((type) => {
-                        const selected = form.projectTypes.includes(type);
+                        const selected = form.projectType === type;
                         return (
                           <motion.button
                             key={type}
                             type="button"
-                            onClick={() => toggleProjectType(type)}
-                            aria-pressed={selected}
-                            whileTap={{ scale: 0.95 }}
+                            role="radio"
+                            aria-checked={selected}
+                            onClick={() => selectProjectType(type)}
+                            whileTap={{ scale: 0.96 }}
                             transition={{ duration: 0.1 }}
-                            className="relative min-h-[44px] rounded-xl border px-3 py-2.5 text-[12px] font-medium transition-colors"
+                            className="relative min-h-[56px] rounded-xl border px-4 py-3 text-sm font-medium transition-colors"
                             style={{
                               backgroundColor: selected
                                 ? "rgba(57,254,21,0.10)"
@@ -470,8 +458,8 @@ export default function QuoteModal({ open, onClose }: QuoteModalProps) {
                             }}
                           >
                             {selected ? (
-                              <span className="absolute right-1.5 top-1.5 flex size-3.5 items-center justify-center rounded-full bg-brand">
-                                <Check className="size-2 text-brand-foreground" />
+                              <span className="absolute right-2.5 top-2.5 flex size-4 items-center justify-center rounded-full bg-brand">
+                                <Check className="size-2.5 text-brand-foreground" />
                               </span>
                             ) : null}
                             {type}
@@ -479,12 +467,12 @@ export default function QuoteModal({ open, onClose }: QuoteModalProps) {
                         );
                       })}
                     </div>
-                    {errors.projectTypes ? (
+                    {errors.projectType ? (
                       <p
                         role="alert"
                         className="mt-1.5 text-[11px] text-red-400"
                       >
-                        {errors.projectTypes}
+                        {errors.projectType}
                       </p>
                     ) : null}
                   </div>
