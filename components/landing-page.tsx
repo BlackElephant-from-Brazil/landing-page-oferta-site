@@ -314,9 +314,10 @@ export default function LandingPage() {
                 data-reveal
                 className="mt-7 max-w-4xl text-[2.45rem] font-medium leading-[0.94] tracking-normal text-white sm:text-[4rem] lg:text-[5.45rem]"
               >
-                <span className="hero-outline">Sites</span>{" "}
-                <span className="hero-highlight">premium</span> em 72h para
-                marcas que precisam vender mais.
+                Chega de pagar caro por páginas que{" "}
+                <span className="hero-outline">não convertem.</span>{" "}
+                A gente entrega em{" "}
+                <span className="hero-highlight">até 72h.</span>
               </h1>
 
               <p
@@ -355,8 +356,8 @@ export default function LandingPage() {
               <div data-reveal className="mt-12 grid max-w-2xl grid-cols-3 gap-3 border-y border-white/12 py-5">
                 {[
                   ["72h", "para publicar"],
-                  ["SEO", "base completa"],
-                  ["A/B", "opcional"],
+                  ["+200", "projetos entregues"],
+                  ["8+", "anos de mercado"],
                 ].map(([value, label]) => (
                   <div key={value} className="text-center sm:text-left sm:pr-4">
                     <p className="text-xl font-medium leading-none text-white sm:text-3xl">
@@ -492,12 +493,8 @@ export default function LandingPage() {
                   Diferencial
                 </span>
                 <h2 className="section-title mt-6">
-                  Seu digital precisa transmitir o tamanho real da sua empresa.
+                  {landingContent.painPointsTitle}
                 </h2>
-                <p className="section-copy mt-5">
-                  O problema não é só design. É percepção, confiança e clareza
-                  comercial. A gente entrega os três num pacote só.
-                </p>
 
                 <div className="mt-10 grid gap-0 border-y border-white/12">
                   {landingContent.painPoints.map((point, index) => (
@@ -518,6 +515,14 @@ export default function LandingPage() {
               </div>
 
               <div className="min-w-0 space-y-4">
+                <div data-reveal className="pb-4">
+                  <h3 className="text-2xl font-medium leading-tight tracking-normal text-white">
+                    {landingContent.solutionBridge.title}
+                  </h3>
+                  <p className="mt-4 text-sm leading-7 text-white/70">
+                    {landingContent.solutionBridge.description}
+                  </p>
+                </div>
                 {landingContent.solutions.map((solution, index) => (
                   <article
                     key={solution.title}
@@ -855,16 +860,19 @@ export default function LandingPage() {
             <div data-reveal className="max-w-3xl">
               <span className="section-kicker">
                 <BadgeCheck className="size-3.5 text-brand" />
-                Credibilidade pronta
+                Resultados
               </span>
               <h2 className="section-title mt-6">
-                Estrutura pronta para receber provas sociais reais.
+                {landingContent.credibilitySection.title}
               </h2>
+              <p className="section-copy mt-5">
+                {landingContent.credibilitySection.subtitle}
+              </p>
             </div>
 
             <div className="mt-12 grid gap-5 lg:grid-cols-3">
-              {landingContent.proofPlaceholders.map((item) => (
-                <div key={item.title} data-reveal>
+              {landingContent.proofCards.map((item) => (
+                <div key={item.tag} data-reveal>
                   <LiquidGlassV2
                     variant="sidebar"
                     borderRadius="1.8rem"
@@ -872,14 +880,13 @@ export default function LandingPage() {
                     className="h-full !cursor-default"
                   >
                     <div className="flex h-full w-full flex-col p-6 sm:p-7">
-                      <div className="inline-flex w-fit rounded-full border border-brand/25 bg-brand-soft p-2.5">
-                        <Sparkles className="size-4 text-brand" />
+                      <div className="inline-flex w-fit rounded-full border border-brand/25 bg-brand-soft px-3 py-1.5">
+                        <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-brand">
+                          {item.tag}
+                        </span>
                       </div>
-                      <h3 className="mt-6 text-lg font-medium tracking-normal text-white sm:text-xl">
-                        {item.title}
-                      </h3>
-                      <p className="mt-3 text-sm leading-7 text-white/68">
-                        {item.description}
+                      <p className="mt-6 text-sm leading-7 text-white/80">
+                        {item.body}
                       </p>
                     </div>
                   </LiquidGlassV2>
@@ -1181,11 +1188,10 @@ export default function LandingPage() {
                     Vamos colocar no ar
                   </div>
                   <h2 className="mx-auto mt-8 max-w-4xl text-3xl font-medium leading-[1.02] tracking-normal text-white sm:text-4xl lg:text-[3.2rem]">
-                    Sua empresa pode entrar no digital com mais autoridade.
+                    {landingContent.ctaFinal.title}
                   </h2>
                   <p className="mx-auto mt-6 max-w-2xl font-mono text-sm leading-7 text-white/72 sm:text-base">
-                    A BlackElephant entrega estrutura, acabamento e velocidade
-                    para sua marca vender melhor — em até 72 horas.
+                    {landingContent.ctaFinal.description}
                   </p>
 
                   <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -1197,7 +1203,7 @@ export default function LandingPage() {
                       className="group relative inline-flex min-h-12 items-center justify-center gap-3 overflow-hidden rounded-full bg-brand px-7 py-3 text-sm font-medium text-brand-foreground transition hover:translate-y-[-1px] hover:bg-[#58ff39]"
                     >
                       <span className="relative z-10">
-                        {landingContent.contact.whatsappLabel}
+                        {landingContent.ctaFinal.cta}
                       </span>
                       <MessageCircleMore className="relative z-10 size-5" />
                       <span
@@ -1209,6 +1215,9 @@ export default function LandingPage() {
                       {landingContent.contact.whatsappNumber}
                     </div>
                   </div>
+                  <p className="mx-auto mt-8 max-w-xl font-mono text-xs leading-6 text-white/46">
+                    {landingContent.ctaFinal.ps}
+                  </p>
                 </div>
               </LiquidGlassV2>
             </div>
