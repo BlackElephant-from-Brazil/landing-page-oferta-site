@@ -344,9 +344,9 @@ export default function LandingPage() {
                 data-reveal
                 className="mt-7 max-w-4xl text-[2.45rem] font-medium leading-[0.94] tracking-normal text-white sm:text-[4rem] lg:text-[5.45rem]"
               >
-                <span className="hero-outline">Sites</span>{" "}
-                <span className="hero-highlight">premium</span> em 72h para
-                marcas que precisam vender mais.
+                <span className="hero-outline">Seu site</span>{" "}
+                <span className="hero-highlight">premium</span> no ar em 72
+                horas. Domínio e hospedagem inclusos.
               </h1>
 
               <p
@@ -389,9 +389,9 @@ export default function LandingPage() {
                 className="mt-12 grid max-w-2xl grid-cols-3 gap-3 border-y border-white/12 py-5"
               >
                 {[
-                  ["72h", "para publicar"],
+                  ["72h", "do briefing ao ar"],
                   ["SEO", "base completa"],
-                  ["A/B", "opcional"],
+                  ["Grátis", "hospedagem e domínio"],
                 ].map(([value, label]) => (
                   <div key={value} className="text-center sm:text-left sm:pr-4">
                     <p className="text-xl font-medium leading-none text-white sm:text-3xl">
@@ -417,7 +417,7 @@ export default function LandingPage() {
                 <div className="w-full p-5 sm:p-7">
                   <div className="flex items-start justify-between gap-6 border-b border-white/12 pb-6">
                     <p className="max-w-[12rem] font-mono text-[11px] uppercase leading-5 tracking-[0.16em] text-white/58">
-                      Orçamento personalizado para o seu projeto
+                      Quanto custa transformar sua presença digital?
                     </p>
                     <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-brand text-brand-foreground">
                       <ArrowUpRight className="size-5" />
@@ -439,7 +439,7 @@ export default function LandingPage() {
                       ))}
                     </div>
                     <h3 className="mt-6 max-w-sm text-2xl font-medium leading-tight tracking-normal text-white">
-                      Tecnologia com identidade para marcas que precisam crescer.
+                      Seu site no ar em 72h, com o padrão que sua empresa merece.
                     </h3>
                   </div>
 
@@ -530,11 +530,12 @@ export default function LandingPage() {
                   Diferencial
                 </span>
                 <h2 className="section-title mt-6">
-                  Seu digital precisa transmitir o tamanho real da sua empresa.
+                  Seu site atual está custando mais do que você imagina.
                 </h2>
                 <p className="section-copy mt-5">
-                  O problema não é só design. É percepção, confiança e clareza
-                  comercial. A gente entrega os três num pacote só.
+                  Cada dia sem uma presença digital forte é um cliente que foi
+                  embora sem te dar uma chance. A gente sabe o que seu cliente
+                  vê antes de entrar em contato. E o que faz ele desistir.
                 </p>
 
                 <div className="mt-10 grid gap-0 border-y border-white/12">
@@ -595,12 +596,13 @@ export default function LandingPage() {
                   Serviços
                 </span>
                 <h2 className="section-title mt-6">
-                  Dois produtos. Uma missão: colocar sua marca no ar com autoridade.
+                  Dois produtos. Uma entrega: sua empresa no digital com a
+                  autoridade que você construiu no mundo real.
                 </h2>
               </div>
               <p className="max-w-md font-mono text-xs leading-6 text-white/56">
-                Sites e landing pages com código próprio, visual premium e
-                publicação em até 72 horas.
+                Cada projeto feito sob medida, com copy estratégica e design
+                que posiciona. Não só decora.
               </p>
             </div>
 
@@ -685,11 +687,11 @@ export default function LandingPage() {
                 Parceria contínua
               </span>
               <h2 className="section-title mt-6">
-                Não entregamos e sumimos — somos parceiros de longo prazo.
+                Entregamos. E continuamos do lado.
               </h2>
               <p className="section-copy mt-5">
-                Mantemos, otimizamos e evoluímos o que entregamos. Sua presença
-                digital cresce junto com o negócio.
+                O site vai para o ar. Mas o trabalho real começa aí. Mantemos,
+                evoluímos e otimizamos enquanto seu negócio cresce.
               </p>
             </div>
 
@@ -746,11 +748,11 @@ export default function LandingPage() {
                 Como acontece
               </span>
               <h2 className="section-title mt-6">
-                Processo rápido, direto e sem fricção.
+                Do briefing ao ar em 72 horas.
               </h2>
               <p className="section-copy mt-5">
-                Tiramos o projeto do papel com clareza, ritmo e padrão premium
-                do briefing à publicação.
+                Sem etapas separadas, sem espera entre fases. Você fala, a
+                gente entrega. Rápido e sem susto.
               </p>
             </div>
 
@@ -798,7 +800,7 @@ export default function LandingPage() {
                 Trajetória
               </span>
               <h2 className="section-title mt-6">
-                Uma trajetória que saiu do software e chegou à expansão digital.
+                9 anos construindo tecnologia real. Agora, para o seu digital.
               </h2>
             </div>
 
@@ -851,22 +853,22 @@ export default function LandingPage() {
           </div>
         </section>
 
-        {/* ── Credibilidade ── */}
+        {/* ── Métricas ── */}
         <section className="section-band-muted">
           <div className="shell">
             <div data-reveal className="max-w-3xl">
               <span className="section-kicker">
                 <BadgeCheck className="size-3.5 text-brand" />
-                Credibilidade pronta
+                Prova real
               </span>
               <h2 className="section-title mt-6">
-                Estrutura pronta para receber provas sociais reais.
+                Números de quem entrega, não de quem promete.
               </h2>
             </div>
 
-            <div className="mt-12 grid gap-5 lg:grid-cols-3">
-              {landingContent.proofPlaceholders.map((item) => (
-                <div key={item.title} data-reveal>
+            <div className="mt-12 grid gap-5 sm:grid-cols-3">
+              {landingContent.proofMetrics.map((item) => (
+                <div key={item.value} data-reveal>
                   <LiquidGlassV2
                     variant="sidebar"
                     borderRadius="1.8rem"
@@ -874,13 +876,10 @@ export default function LandingPage() {
                     className="h-full !cursor-default"
                   >
                     <div className="flex h-full w-full flex-col p-6 sm:p-7">
-                      <div className="inline-flex w-fit rounded-full border border-brand/25 bg-brand-soft p-2.5">
-                        <Sparkles className="size-4 text-brand" />
-                      </div>
-                      <h3 className="mt-6 text-lg font-medium tracking-normal text-white sm:text-xl">
-                        {item.title}
-                      </h3>
-                      <p className="mt-3 text-sm leading-7 text-white/68">
+                      <p className="text-[3rem] font-medium leading-none tracking-tight text-brand sm:text-[3.4rem]">
+                        {item.value}
+                      </p>
+                      <p className="mt-4 text-sm leading-7 text-white/68">
                         {item.description}
                       </p>
                     </div>
@@ -900,11 +899,11 @@ export default function LandingPage() {
                   <Layers3 className="size-3.5 text-brand" />
                   Portfólio
                 </span>
-                <h2 className="section-title mt-6">Trabalhos que falam por si.</h2>
+                <h2 className="section-title mt-6">Projetos reais. Clientes reais.</h2>
               </div>
               <p className="max-w-md font-mono text-xs leading-6 text-white/56">
-                Sistemas e presença digital entregues com padrão premium para
-                empresas reais.
+                Sistemas, apps e sites entregues para empresas de transporte,
+                financeiro, jurídico e serviços. Código real, resultado real.
               </p>
             </div>
 
@@ -1146,11 +1145,11 @@ export default function LandingPage() {
                 FAQ
               </span>
               <h2 className="section-title mt-6">
-                Respostas rápidas para destravar a decisão.
+                Respostas rápidas para quem está quase decidido.
               </h2>
               <p className="section-copy mt-5">
-                Ainda restou dúvida? Solicite um orçamento e tire todas as
-                dúvidas com nosso time.
+                Se ainda tem dúvida, faz sentido. Tire todas com a gente antes
+                de decidir, sem compromisso.
               </p>
               <button
                 type="button"
@@ -1178,14 +1177,16 @@ export default function LandingPage() {
                 <div className="w-full px-6 py-12 text-center sm:px-12 sm:py-16">
                   <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-brand/30 bg-brand-soft px-4 py-2 font-mono text-[11px] uppercase tracking-[0.16em] text-brand">
                     <Clock3 className="size-3.5" />
-                    Vamos colocar no ar
+                    Pronto para começar
                   </div>
                   <h2 className="mx-auto mt-8 max-w-4xl text-3xl font-medium leading-[1.02] tracking-normal text-white sm:text-4xl lg:text-[3.2rem]">
-                    Sua empresa pode entrar no digital com mais autoridade.
+                    Cada dia sem um site que vende é um cliente que foi embora
+                    sem te dar uma chance.
                   </h2>
                   <p className="mx-auto mt-6 max-w-2xl font-mono text-sm leading-7 text-white/72 sm:text-base">
-                    A BlackElephant entrega estrutura, acabamento e velocidade
-                    para sua marca vender melhor — em até 72 horas.
+                    A BlackElephant entrega o site que sua empresa merece: visual
+                    premium, copy estratégica, SEO de base e hospedagem inclusa.
+                    Em até 72 horas. Com suporte de verdade depois.
                   </p>
 
                   <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
@@ -1196,7 +1197,7 @@ export default function LandingPage() {
                       className="group relative inline-flex min-h-12 items-center justify-center gap-3 overflow-hidden rounded-full bg-brand px-7 py-3 text-sm font-medium text-brand-foreground transition hover:translate-y-[-1px] hover:bg-[#58ff39]"
                     >
                       <span className="relative z-10">
-                        Solicitar um orçamento personalizado
+                        Quero meu site em 72 horas
                       </span>
                       <ArrowRight className="relative z-10 size-5 transition-transform group-hover:translate-x-0.5" />
                       <span

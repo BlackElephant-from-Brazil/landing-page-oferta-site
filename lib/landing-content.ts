@@ -25,8 +25,8 @@ export interface TimelineEntry {
   description: string;
 }
 
-export interface ProofPlaceholder {
-  title: string;
+export interface ProofMetric {
+  value: string;
   description: string;
 }
 
@@ -51,49 +51,50 @@ export interface LandingPageContent {
     description: string;
   }[];
   companyTimeline: TimelineEntry[];
-  proofPlaceholders: ProofPlaceholder[];
+  proofMetrics: ProofMetric[];
   faq: FaqItem[];
 }
 
 export const landingContent: LandingPageContent = {
   hero: {
-    headline: "Seu site institucional em 72h",
+    headline: "Seu site premium no ar em 72 horas",
     subheadline:
-      "Criamos sites e landing pages com visual premium, segurança e publicação em até 72 horas.",
-    primaryCta: "Solicitar um orçamento personalizado",
-    secondaryCta: "Conhecer nossos serviços",
+      "Enquanto você lê isso, potenciais clientes estão julgando sua empresa pelo que veem no digital. A gente resolve isso em até 72 horas. Design premium, SEO e hospedagem inclusa.",
+    primaryCta: "Quero meu site em 72 horas",
+    secondaryCta: "Ver o que entregamos",
     trustBadges: [
       "Hospedagem e domínio grátis",
       "100% responsivo",
-      "Seguro",
-      "SEO completo",
+      "Seguro e com SSL",
+      "SEO base completo",
     ],
-    quickPoints: ["Entrega rápida", "Visual premium", "Teste A/B opcional"],
+    quickPoints: ["Entrega em 72h", "Visual premium", "Suporte de verdade"],
   },
   painPoints: [
-    "Sua empresa entrega bem, mas ainda não parece premium no digital.",
-    "Seu site atual não converte, não posiciona e passa pouca confiança.",
-    "Tudo está espalhado: comunicação, estrutura e percepção de valor.",
-    "Falta uma página bonita, clara e pronta para vender.",
+    "Sua empresa entrega bem, mas seu site passa a impressão errada para quem ainda não te conhece.",
+    "Seu site não aparece no Google, não converte e não transmite a confiança que você construiu com esforço.",
+    "Você já perdeu contratos para concorrentes menores simplesmente porque o digital deles era mais profissional.",
+    "Cada dia sem um site que vende é um dia com custo invisível: clientes indo embora sem você saber.",
   ],
   solutions: [
     {
-      title: "Sites institucionais que elevam percepção",
+      title: "Sites que fazem o cliente pensar 'essa empresa é séria'",
       description:
-        "Estrutura elegante para transmitir autoridade no primeiro scroll.",
+        "Arquitetura visual e copy estratégica que posiciona sua empresa como referência antes mesmo do cliente ligar.",
     },
     {
-      title: "Landing pages para captação e venda",
-      description: "Páginas focadas em clique, contato e resultado.",
+      title: "Landing pages que transformam tráfego em agenda cheia",
+      description:
+        "Página única construída para um objetivo: converter visitantes em leads qualificados e contatos diretos.",
     },
   ],
   services: [
     {
       iconKey: "Globe",
       title: "Site Institucional",
-      subtitle: "Autoridade digital para sua marca",
+      subtitle: "Para quem precisa ser levado a sério no digital",
       description:
-        "Para empresas que precisam transmitir credibilidade e fechar negócios pelo digital. Entregamos em até 72 horas.",
+        "Para empresas que já entregam bem, mas cujo site não transmite isso. Construímos a presença digital que suas vendas merecem. No ar em até 72 horas.",
       features: [
         "Design premium responsivo",
         "SEO completo",
@@ -105,9 +106,9 @@ export const landingContent: LandingPageContent = {
     {
       iconKey: "Layers3",
       title: "Landing Page",
-      subtitle: "Conversão focada em resultado",
+      subtitle: "Cada clique com um único objetivo: converter",
       description:
-        "Página única de alta performance para campanhas, ofertas e captação de leads qualificados. Pronta em até 72 horas.",
+        "Para quem tem tráfego mas não tem conversão. Uma página com copywriting estratégico, visual forte e CTA claro, pronta para rodar com anúncios ou orgânico em até 72 horas.",
       features: [
         "Narrativa comercial estratégica",
         "Otimizada para tráfego pago",
@@ -121,112 +122,123 @@ export const landingContent: LandingPageContent = {
   partnershipPillars: [
     {
       iconKey: "RefreshCw",
-      title: "Atualizações recorrentes",
+      title: "Sua presença digital nunca fica parada",
       description:
-        "Mantemos sua presença sempre alinhada com a evolução do seu negócio.",
+        "Até 4 atualizações por mês para manter conteúdo, preços e serviços sempre atualizados. Sem precisar contratar ninguém novo cada vez.",
       tags: ["Até 4 atualizações/mês", "Ajustes visuais e textuais", "Padrão premium contínuo"],
     },
     {
       iconKey: "ShieldCheck",
-      title: "Segurança e infraestrutura",
+      title: "Segurança que você não precisa pensar",
       description:
-        "SSL ativo, backups regulares e monitoramento de disponibilidade para proteger sua operação.",
+        "SSL ativo, backups automáticos e monitoramento 24/7. Se algo der errado, a gente resolve antes de você perceber.",
       tags: ["SSL e HTTPS", "Backups automáticos", "Uptime monitorado"],
     },
     {
       iconKey: "LineChart",
-      title: "Evolução orientada a dados",
+      title: "Mais resultado a cada mês",
       description:
-        "Métricas reais para propor melhorias que fazem sentido para o seu objetivo.",
+        "Analisamos o desempenho real do seu site e propomos ajustes baseados em dados, não em achismos. O que funciona fica. O que não funciona, a gente muda.",
       tags: ["Teste A/B estratégico", "Análise de performance", "Otimização contínua"],
     },
     {
       iconKey: "MessageCircleMore",
-      title: "Suporte técnico direto",
+      title: "Um time real do outro lado",
       description:
-        "Canal direto com o time para resolver urgências e ajustes técnicos sem burocracia.",
+        "Sem ticket de suporte, sem fila de espera. Quando você precisar, tem alguém real para responder. Rápido.",
       tags: ["Resposta rápida", "Canal direto com o time", "Sem fila de chamado"],
     },
   ],
   process: [
     {
-      title: "1. Briefing rápido e objetivo",
+      title: "1. Você nos conta o que precisa",
       description:
-        "Entendemos sua oferta e a imagem que a marca precisa passar.",
+        "Uma conversa de 15 minutos é suficiente para entendermos o negócio, o público e a mensagem que precisa chegar.",
     },
     {
-      title: "2. Design, copy e implementação",
-      description: "Montamos a página com visual forte e comunicação clara.",
+      title: "2. A gente monta tudo",
+      description:
+        "Design, copywriting e desenvolvimento em paralelo. Sem etapas separadas, sem espera entre fases. Velocidade sem abrir mão da qualidade.",
     },
     {
-      title: "3. Publicação e ativação",
-      description: "Colocamos tudo no ar com domínio, hospedagem e base pronta.",
+      title: "3. No ar em até 72h",
+      description:
+        "Domínio, hospedagem, SSL e publicação. Você aprova, a gente ativa. Simples assim.",
     },
   ],
   companyTimeline: [
     {
       year: "2017",
-      label: "Nascimento",
-      description: "Começamos com software de gestão para restaurantes.",
+      label: "Origem",
+      description:
+        "Tudo começou com software de gestão para restaurantes. A obsessão por resolver problemas reais com tecnologia nasceu aqui.",
     },
     {
       year: "2019",
-      label: "Masterização",
-      description: "Reinventamos o produto para o PDV beSystem.",
+      label: "Evolução",
+      description:
+        "O produto foi reinventado do zero. beSystem se tornou referência em PDV para o setor de alimentos.",
     },
     {
       year: "2022",
-      label: "Mudança",
-      description: "Passamos a atuar com projetos mais personalizados.",
+      label: "Projetos sob medida",
+      description:
+        "A demanda por projetos customizados chegou. Passamos a atender empresas que precisavam de mais do que um produto pronto.",
     },
     {
       year: "2026",
-      label: "Expansão",
-      description: "Expandimos para sites, apps, automações e presença digital.",
+      label: "Presença digital",
+      description:
+        "Levamos o mesmo padrão de quem construiu software de verdade para sites, landing pages e presença digital completa.",
     },
   ],
-  proofPlaceholders: [
+  proofMetrics: [
     {
-      title: "Case em destaque",
-      description: "Espaço para um projeto com antes e depois.",
+      value: "+8 anos",
+      description:
+        "construindo tecnologia para empresas brasileiras de múltiplos segmentos: financeiro, jurídico, transporte e serviços.",
     },
     {
-      title: "Depoimento de cliente",
-      description: "Espaço para uma fala real com nome e cargo.",
+      value: "6 projetos",
+      description:
+        "no portfólio ativo, em produção hoje. Sistemas, apps e sites entregues para clientes reais.",
     },
     {
-      title: "Prova de autoridade",
-      description: "Área para logos, métricas ou validações futuras.",
+      value: "72 horas",
+      description:
+        "do briefing à publicação. Com domínio, hospedagem e SSL inclusos. Sem custo adicional.",
     },
   ],
   faq: [
     {
       question: "A entrega em até 72 horas vale para qualquer projeto?",
       answer:
-        "Vale para sites institucionais e landing pages dentro do escopo padrão. Projetos com escopo ampliado têm prazo ajustado e definido no orçamento personalizado.",
+        "Vale para sites institucionais e landing pages no escopo padrão, cobrindo a grande maioria dos casos. Quando o projeto precisa de funcionalidades extras, deixamos claro no orçamento quanto vai levar e por quê. Sem surpresas.",
     },
     {
       question: "Hospedagem e domínio realmente já estão inclusos?",
-      answer: "Sim. Todos os projetos de site e landing page incluem hospedagem e domínio grátis.",
+      answer:
+        "Sim, sem letras miúdas. Hospedagem em servidor profissional e domínio .com.br (ou .com) já estão no pacote. Você não vai receber uma cobrança surpresa depois.",
     },
     {
       question: "O site fica preparado para celular e Google?",
-      answer: "Sim. O projeto sai responsivo, seguro e com SEO de base.",
+      answer:
+        "Sim. Responsivo para todos os tamanhos de tela, SSL ativo e SEO base completo: título, meta description, sitemap, velocidade e estrutura semântica. Você sai com tudo que precisa para aparecer no Google desde o primeiro dia.",
     },
     {
-      question: "Quando vale a pena escolher a versão com teste A/B?",
+      question: "Posso pedir alterações depois que o site for entregue?",
       answer:
-        "Quando você quer validar headline, CTA ou abordagem com mais precisão e tem tráfego suficiente para gerar dados confiáveis.",
+        "Sim. Após a entrega, você pode contratar um plano de parceria para manutenção, atualizações e evolução do site. Os detalhes são apresentados junto com o orçamento. Você só paga se fizer sentido para o seu momento.",
     },
     {
-      question: "Como funciona o suporte contínuo?",
+      question: "Como funciona o processo depois que eu entrar em contato?",
       answer:
-        "Após a entrega, oferecemos planos de parceria para manter, otimizar e evoluir o que foi construído. Os detalhes são apresentados no orçamento conforme o projeto.",
+        "Você solicita o orçamento, a gente entra em contato em até 24 horas com uma proposta personalizada. Se aprovar, o briefing leva menos de 15 minutos. Em até 72 horas, o site está no ar.",
     },
     {
       question: "Vocês também cuidam do ambiente de e-mail da empresa?",
       answer:
-        "Sim. Estruturamos Google Workspace ou Microsoft 365 com segurança e ambiente digital profissional.",
+        "Sim. Configuramos Google Workspace ou Microsoft 365 com ambiente profissional e seguro. Nada de 'seunome@gmail.com' em proposta comercial.",
     },
   ],
 };

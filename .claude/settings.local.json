@@ -14,7 +14,16 @@
       "Bash(curl -s http://localhost:3000)",
       "Bash(git init *)",
       "Bash(git remote *)",
-      "Bash(npx next *)"
+      "Bash(npx next *)",
+      "Bash(python *)",
+      "Bash(pip install *)",
+      "Bash(mkdir -p \"C:/Users/guilh/.claude/plugins/cache/claude-plugins-official/skill-creator/unknown/skills/copywriter\")",
+      "Bash(mkdir -p \"C:/Users/guilh/.claude/plugins/cache/claude-plugins-official/skill-creator/unknown/copywriter-workspace\")",
+      "Bash(start *)",
+      "Bash(mkdir -p \"C:/Users/guilh/.claude/plugins/cache/local/copywriter/1.0.0/skills/copywriter\")",
+      "Bash(cp \"C:/Users/guilh/.claude/plugins/cache/claude-plugins-official/skill-creator/unknown/skills/copywriter/SKILL.md\" \"C:/Users/guilh/.claude/plugins/cache/local/copywriter/1.0.0/skills/copywriter/SKILL.md\")",
+      "Bash(findstr \"LISTEN\")",
+      "Bash(findstr \":30\")"
     ]
   }
 }
