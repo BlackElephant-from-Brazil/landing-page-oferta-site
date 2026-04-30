@@ -13,7 +13,11 @@
       "Bash(find \"C:/Users/v27me/Videos/landing-page-oferta-site/Portif\"* -name \"*.txt\")",
       "Bash(curl -s http://localhost:3000)",
       "Bash(git init *)",
-      "Bash(git remote *)"
+      "Bash(git remote *)",
+      "Bash(npx next *)",
+      "Bash(python -c ' *)",
+      "Bash(grep -c \"text-white\\\\\\\\\\\\\\\\/72\" components/landing-page.tsx)",
+      "Bash(npx eslint *)"
     ]
   }
 }
