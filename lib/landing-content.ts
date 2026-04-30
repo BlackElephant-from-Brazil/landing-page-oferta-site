@@ -31,6 +31,18 @@ export interface ProofCard {
   body: string;
 }
 
+export interface ContentBlock {
+  title: string;
+  description: string;
+}
+
+export interface AddonEmail {
+  title: string;
+  price: string;
+  afterPrice: string;
+  description: string;
+}
+
 export interface LandingPageContent {
   hero: {
     headline: string;
@@ -43,12 +55,9 @@ export interface LandingPageContent {
   painPoints: string[];
   solutionBridge: {
     title: string;
-    body: string;
-  };
-  solutions: {
-    title: string;
     description: string;
-  }[];
+  };
+  solutions: ContentBlock[];
   credibilitySection: {
     title: string;
     subtitle: string;
@@ -56,21 +65,13 @@ export interface LandingPageContent {
   proofCards: ProofCard[];
   offers: LandingOffer[];
   supportPlans: SupportPlan[];
-  addonEmail: {
-    title: string;
-    price: string;
-    afterPrice: string;
-    description: string;
-  };
-  process: {
-    title: string;
-    description: string;
-  }[];
+  addonEmail: AddonEmail;
+  process: ContentBlock[];
   companyTimeline: TimelineEntry[];
   faq: FaqItem[];
   ctaFinal: {
     title: string;
-    body: string;
+    description: string;
     cta: string;
     ps: string;
   };
@@ -104,7 +105,7 @@ export const landingContent: LandingPageContent = {
   ],
   solutionBridge: {
     title: "Existe uma saída mais simples do que você imagina.",
-    body: "Você não precisa de mais um gestor caro que vai sumir no meio do projeto. Precisa de um studio que já fez isso mais de 200 vezes, que sabe o que converte, e que coloca tudo no ar em até 72 horas com hospedagem e domínio inclusos. Sem surpresa no prazo. Sem surpresa no preço.",
+    description: "Você não precisa de mais um gestor caro que vai sumir no meio do projeto. Precisa de um studio que já fez isso mais de 200 vezes, que sabe o que converte, e que coloca tudo no ar em até 72 horas com hospedagem e domínio inclusos. Sem surpresa no prazo. Sem surpresa no preço.",
   },
   solutions: [
     {
@@ -300,7 +301,7 @@ export const landingContent: LandingPageContent = {
   ],
   ctaFinal: {
     title: "Sua página pode estar no ar essa semana.",
-    body: "Cada dia com uma página ruim é um dia perdendo cliente para o concorrente. Chama a gente no WhatsApp agora e em até 72 horas seu site ou landing page está pronto.",
+    description: "Cada dia com uma página ruim é um dia perdendo cliente para o concorrente. Chama a gente no WhatsApp agora e em até 72 horas seu site ou landing page está pronto.",
     cta: "Quero minha página agora",
     ps: "P.S.: Hospedagem e domínio grátis no primeiro ano. Sem surpresa no prazo. Sem surpresa no preço.",
   },
