@@ -516,9 +516,9 @@ export default function LandingPage() {
 
               <div className="min-w-0 space-y-4">
                 <div data-reveal className="pb-4">
-                  <h3 className="text-2xl font-medium leading-tight tracking-normal text-white">
+                  <p className="text-2xl font-medium leading-tight tracking-normal text-white">
                     {landingContent.solutionBridge.title}
-                  </h3>
+                  </p>
                   <p className="mt-4 text-sm leading-7 text-white/70">
                     {landingContent.solutionBridge.description}
                   </p>
@@ -885,7 +885,7 @@ export default function LandingPage() {
                           {item.tag}
                         </span>
                       </div>
-                      <p className="mt-6 text-sm leading-7 text-white/80">
+                      <p className="mt-6 text-sm leading-7 text-white/68">
                         {item.body}
                       </p>
                     </div>
