@@ -1156,7 +1156,7 @@ export default function LandingPage() {
                 Respostas rápidas para destravar a decisão.
               </h2>
               <p className="section-copy mt-5">
-                Ainda restou dúvida? Manda no WhatsApp — a gente responde sem
+                Ainda restou dúvida? Manda no WhatsApp, a gente responde sem
                 roteiro.
               </p>
               <a
